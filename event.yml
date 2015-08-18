@@ -1,0 +1,6 @@
+#
+# Event fock
+#
+eccube.event.render.admin_order.before:
+    - [onRenderAdminOrderPdfBefore, NORMAL]
+
