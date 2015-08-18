@@ -80,8 +80,7 @@ class OrderPdf
             // no-op
         }
 
-        return $html;
-
+        return html_entity_decode($html);
     }
 
 }
