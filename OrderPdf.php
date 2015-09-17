@@ -61,7 +61,7 @@ class OrderPdf
         $crawler = new Crawler($response->getContent());
 
         // [orm id="dropdown-form"]の最終項目に追加(レイアウトに依存（時間無いのでベタ）)
-        $html  = $crawler->html();
+        $html  = $this->getHtmlFromCrawler($crawler);
 
         $parts = $this->app->renderView(
             'OrderPdf/View/admin/order_pdf_menu.twig'
@@ -82,5 +82,21 @@ class OrderPdf
 
         return html_entity_decode($html);
     }
+
+	/**
+	 * 解析用HTMLを取得
+	 *
+	 * @param Crawler $crawler
+	 * @return string
+	 */
+	private function getHtmlFromCrawler(Crawler $crawler)
+	{
+	    $html = '';
+	    foreach ($crawler as $domElement) {
+	        $domElement->ownerDocument->formatOutput = true;
+	        $html .= $domElement->ownerDocument->saveHTML();
+	    }
+	    return html_entity_decode($html, ENT_NOQUOTES, 'UTF-8');
+	}
 
 }
