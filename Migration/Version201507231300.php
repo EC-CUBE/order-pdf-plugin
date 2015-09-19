@@ -39,21 +39,6 @@ class Version201507231300 extends AbstractMigration
         $schema->dropSequence('plg_order_pdf_plugin_plugin_id_seq');
     }
 
-    public function postUp(Schema $schema)
-    {
-
-        $app = new \Eccube\Application();
-        $app->boot();
-        $pluginCode = 'OrderPdf';
-        $pluginName = '納品書';
-        $datetime = date('Y-m-d H:i:s');
-        $insert = "INSERT INTO plg_order_pdf_plugin(
-                            plugin_code, plugin_name, create_date, update_date)
-                    VALUES ('$pluginCode', '$pluginName', '$datetime', '$datetime'
-                            );";
-        $this->connection->executeUpdate($insert);
-    }
-
     protected function createPlgOrderPdfPlugin(Schema $schema)
     {
         $table = $schema->createTable("plg_order_pdf_plugin");
