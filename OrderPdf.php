@@ -37,6 +37,10 @@ class OrderPdf
     public function onRenderAdminOrderPdfBefore(FilterResponseEvent $event)
     {
         $app = $this->app;
+        if (!$this->app->isGranted('ROLE_ADMIN')) {
+            return;
+        }
+
         $request = $event->getRequest();
         $response = $event->getResponse();
         $id = $request->attributes->get('id');
@@ -83,20 +87,20 @@ class OrderPdf
         return html_entity_decode($html);
     }
 
-	/**
-	 * 解析用HTMLを取得
-	 *
-	 * @param Crawler $crawler
-	 * @return string
-	 */
-	private function getHtmlFromCrawler(Crawler $crawler)
-	{
-	    $html = '';
-	    foreach ($crawler as $domElement) {
-	        $domElement->ownerDocument->formatOutput = true;
-	        $html .= $domElement->ownerDocument->saveHTML();
-	    }
-	    return html_entity_decode($html, ENT_NOQUOTES, 'UTF-8');
-	}
+    /**
+     * 解析用HTMLを取得
+     *
+     * @param Crawler $crawler
+     * @return string
+     */
+    private function getHtmlFromCrawler(Crawler $crawler)
+    {
+        $html = '';
+        foreach ($crawler as $domElement) {
+            $domElement->ownerDocument->formatOutput = true;
+            $html .= $domElement->ownerDocument->saveHTML();
+        }
+        return html_entity_decode($html, ENT_NOQUOTES, 'UTF-8');
+    }
 
 }
