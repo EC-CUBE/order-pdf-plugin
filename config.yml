@@ -1,7 +1,7 @@
 name: OrderPdf
 event: OrderPdf
 code: OrderPdf
-version: 0.0.1
+version: 0.0.2
 service:
     - OrderPdfServiceProvider
 orm.path:
