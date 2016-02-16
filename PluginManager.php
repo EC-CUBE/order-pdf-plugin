@@ -16,17 +16,6 @@ use Eccube\Plugin\AbstractPluginManager;
 class PluginManager extends AbstractPluginManager
 {
 
-    /**
-     * Image folder path (cop source)
-     * @var type
-     */
-    protected $imgSrc;
-    /**
-     *Image folder path (copy destination)
-     * @var type
-     */
-    protected $imgDst;
-
     public function __construct()
     {
     }
