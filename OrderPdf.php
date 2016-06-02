@@ -11,96 +11,45 @@
 
 namespace Plugin\OrderPdf;
 
+use Eccube\Common\Constant;
 use Eccube\Event\RenderEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\CssSelector\CssSelector;
-use Symfony\Component\DomCrawler\Crawler;
 
 class OrderPdf
 {
 
     private $app;
+    private $legacyEvent;
 
     public function __construct($app)
     {
         $this->app = $app;
+        $this->legacyEvent = new OrderPdfLegacy($app);
+    }
+
+    public function onResponseAdminOrderPdfBefore(FilterResponseEvent $event)
+    {
+        $this->legacyEvent->onRenderAdminOrderPdfBefore($event);
     }
 
     /**
-     * 受注マスター表示、検索ボタンクリック時のEvent Fock.
-     * 下記の項目を追加する.
-     * ・検索結果一覧のコンボボックスに「帳票出力」を追加
-     * ・検索結果一覧の上部に「一括帳票出力を追加
-     *
-     * @param FilterResponseEvent $event
+     * for v3.0.0 - 3.0.8
+     * @deprecated for since v3.0.0, to be removed in 3.1.
      */
     public function onRenderAdminOrderPdfBefore(FilterResponseEvent $event)
     {
-        $app = $this->app;
-        if (!$this->app->isGranted('ROLE_ADMIN')) {
+        if ($this->supportNewHookPoint()) {
             return;
         }
-
-        $request = $event->getRequest();
-        $response = $event->getResponse();
-        $id = $request->attributes->get('id');
-
-        $response->setContent($this->getHtml($request, $response, $id));
-        $event->setResponse($response);
+        $this->legacyEvent->onRenderAdminOrderPdfBefore($event);
     }
 
     /**
-     * EC-CUBEの受注マスター画面のHTMLを取得し、帳票関連項目を書き込む
-     *
-     * @param unknown $request
-     * @param unknown $response
-     * @param unknown $id
-     * @return mixed
+     * @return bool v3.0.9以降のフックポイントに対応しているか？
      */
-    private function getHtml($request, $response, $id) {
-
-        // 検索結果一覧の下部に帳票出力を追加する
-
-        // 受注管理-受注マスターのHTMLを取得し、DOM化
-        $crawler = new Crawler($response->getContent());
-
-        // [orm id="dropdown-form"]の最終項目に追加(レイアウトに依存（時間無いのでベタ）)
-        $html  = $this->getHtmlFromCrawler($crawler);
-
-        $parts = $this->app->renderView(
-            'OrderPdf/View/admin/order_pdf_menu.twig'
-        );
-
-         try {
-            // ※商品編集画面 idなりclassなりがきちんとつかないとDOMをいじるのは難しい
-            // また、[その他]メニューの中に入れ込もうとしたがJQUERYのイベントが動作するので不可
-            // = = = = = = = = =
-            // その他メニューに追加するバージョン
-            $form  = $crawler->filter('#dropmenu .dropdown-menu')->last()->html();
-            $newForm = $form . $parts;
-
-            $html = str_replace($form, $newForm , $html);
-         } catch (\InvalidArgumentException $e) {
-            // no-op
-        }
-
-        return html_entity_decode($html);
-    }
-
-    /**
-     * 解析用HTMLを取得
-     *
-     * @param Crawler $crawler
-     * @return string
-     */
-    private function getHtmlFromCrawler(Crawler $crawler)
+    private function supportNewHookPoint()
     {
-        $html = '';
-        foreach ($crawler as $domElement) {
-            $domElement->ownerDocument->formatOutput = true;
-            $html .= $domElement->ownerDocument->saveHTML();
-        }
-        return html_entity_decode($html, ENT_NOQUOTES, 'UTF-8');
+        return version_compare('3.0.9', Constant::VERSION, '<=');
     }
 
 }
