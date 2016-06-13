@@ -1,7 +1,16 @@
 #
 # Event fock
 #
+
+# admin page event
+eccube.event.route.admin_order.response:
+    - [onResponseAdminOrderPdfBefore, NORMAL]
+eccube.event.route.admin_order_page.response:
+    - [onResponseAdminOrderPdfBefore, NORMAL]
+
+# deprecated event (for v3.0.0 - 3.0.8)
 eccube.event.render.admin_order.before:
     - [onRenderAdminOrderPdfBefore, NORMAL]
 eccube.event.render.admin_order_page.before:
     - [onRenderAdminOrderPdfBefore, NORMAL]
+
