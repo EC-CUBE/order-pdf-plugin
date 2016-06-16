@@ -1,16 +1,20 @@
 <?php
+/**
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace Plugin\OrderPdf\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
-/**
- * Created by PhpStorm.
- * User: Nguyen Dinh Hoa
- * Date: 5/31/2016
- * Time: 2:00 PM
- */
+
 class OrderPdfAdminControllerTest extends AbstractAdminWebTestCase
 {
     protected $Order;
