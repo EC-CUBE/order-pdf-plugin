@@ -4,4 +4,9 @@
 
 帳票プラグイン
 
-管理画面にて、受注詳細ををPDF出力することができます。
+管理画面にて、受注詳細をPDF出力することができます。
+
+http://ec-cube.github.io/template.html
+に則り、`app/template/admin/OrderPdf/`配下に  
+`nouhinsyo1.pdf`、`logo.png`が存在すれば優先的に読み込みます。
+
