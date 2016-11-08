@@ -1,46 +1,79 @@
 <?php
 /*
-* This file is part of EC-CUBE
-*
-* Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
-* http://www.lockon.co.jp/
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of the Order Pdf plugin
+ *
+ * Copyright (C) 2016 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Plugin\OrderPdf;
 
-use Eccube\Common\Constant;
-use Eccube\Event\RenderEvent;
+use Eccube\Application;
+use Eccube\Event\TemplateEvent;
+use Plugin\OrderPdf\Utils\Version;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
+/**
+ * Class OrderPdf Event.
+ */
 class OrderPdf
 {
-
+    /**
+     * @var Application
+     */
     private $app;
+
     private $legacyEvent;
 
-    public function __construct($app)
+    /**
+     * OrderPdf constructor.
+     *
+     * @param Application $app
+     */
+    public function __construct(Application $app)
     {
         $this->app = $app;
         $this->legacyEvent = new OrderPdfLegacy($app);
     }
 
-    public function onResponseAdminOrderPdfBefore(FilterResponseEvent $event)
+    /**
+     * Event for new hook point.
+     *
+     * @param TemplateEvent $event
+     */
+    public function onAdminOrderRender(TemplateEvent $event)
     {
-        $this->legacyEvent->onRenderAdminOrderPdfBefore($event);
+        /**
+         * @var \Twig_Environment $twig
+         */
+        $twig = $this->app['twig'];
+
+        $twigAppend = $twig->getLoader()->getSource('OrderPdf/Resource/template/admin/order_pdf_menu.twig');
+        /**
+         * @var string $twigSource twig template.
+         */
+        $twigSource = $event->getSource();
+
+        $twigSource = $this->legacyEvent->renderPosition($twigSource, $twigAppend);
+
+        $event->setSource($twigSource);
     }
 
     /**
-     * for v3.0.0 - 3.0.8
-     * @deprecated for since v3.0.0, to be removed in 3.1.
+     * Event for v3.0.0 - 3.0.8.
+     *
+     * @param FilterResponseEvent $event
+     *
+     * @deprecated for since v3.0.0, to be removed in 3.1
      */
     public function onRenderAdminOrderPdfBefore(FilterResponseEvent $event)
     {
         if ($this->supportNewHookPoint()) {
             return;
         }
+
         $this->legacyEvent->onRenderAdminOrderPdfBefore($event);
     }
 
@@ -49,7 +82,6 @@ class OrderPdf
      */
     private function supportNewHookPoint()
     {
-        return version_compare('3.0.9', Constant::VERSION, '<=');
+        return Version::isSupport();
     }
-
 }

@@ -1,11 +1,6 @@
 name: OrderPdf
 event: OrderPdf
 code: OrderPdf
-version: 0.0.2
+version: 1.0.0
 service:
     - OrderPdfServiceProvider
-orm.path:
-    - /Resource/doctrine
-#form:
-#    onSetData:
-#        Form\Type\PaymentFragmentForm

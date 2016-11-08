@@ -1,36 +1,45 @@
 <?php
 /*
-* This file is part of EC-CUBE
-*
-* Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
-* http://www.lockon.co.jp/
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of the Order Pdf plugin
+ *
+ * Copyright (C) 2016 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Plugin\OrderPdf\Form\Type;
 
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Class OrderPdfType.
+ */
 class OrderPdfType extends AbstractType
 {
-
+    /**
+     * @var Application
+     */
     private $app;
 
-    public function __construct(\Eccube\Application $app)
+    /**
+     * OrderPdfType constructor.
+     *
+     * @param object $app
+     */
+    public function __construct($app)
     {
         $this->app = $app;
     }
 
     /**
-     * Build config type form
+     * Build config type form.
      *
      * @param FormBuilderInterface $builder
-     * @param array $options
-     * @return type
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,12 +51,11 @@ class OrderPdfType extends AbstractType
                 'required' => false,
                 'attr' => array('readonly' => 'readonly'),
                 'constraints' => array(
-                    new Assert\NotBlank()
+                    new Assert\NotBlank(),
                 ),
             ))
             ->add('issue_date', 'date', array(
                 'label' => '発行日',
-                'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
@@ -57,12 +65,12 @@ class OrderPdfType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\DateTime(),
                 ),
-
             ))
             ->add('title', 'text', array(
                 'label' => '帳票タイトル',
                 'required' => false,
-                'data' => 'お買上げ明細書(納品書)',
+                'data' => $this->app->trans('admin.order_pdf.title.default'),
+                'attr' => array('maxlength' => $config['stext_len']),
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
@@ -71,27 +79,30 @@ class OrderPdfType extends AbstractType
             ->add('message1', 'text', array(
                 'label' => '1行目',
                 'required' => false,
-                'data' => 'このたびはお買上げいただきありがとうございます。',
+                'data' => $this->app->trans('admin.order_pdf.message1.default'),
+                'attr' => array('maxlength' => $config['order_pdf_message_len']),
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['stext_len'])),
+                    new Assert\Length(array('max' => $config['order_pdf_message_len'])),
                 ),
                 'trim' => false,
             ))
             ->add('message2', 'text', array(
                 'label' => '2行目',
                 'required' => false,
-                'data' => '下記の内容にて納品させていただきます。',
+                'data' => $this->app->trans('admin.order_pdf.message2.default'),
+                'attr' => array('maxlength' => $config['order_pdf_message_len']),
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['stext_len'])),
+                    new Assert\Length(array('max' => $config['order_pdf_message_len'])),
                 ),
                 'trim' => false,
             ))
             ->add('message3', 'text', array(
                 'label' => '3行目',
                 'required' => false,
-                'data' => 'ご確認くださいますよう、お願いいたします。',
+                'data' => $this->app->trans('admin.order_pdf.message3.default'),
+                'attr' => array('maxlength' => $config['order_pdf_message_len']),
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['stext_len'])),
+                    new Assert\Length(array('max' => $config['order_pdf_message_len'])),
                 ),
                 'trim' => false,
             ))
@@ -99,6 +110,7 @@ class OrderPdfType extends AbstractType
             ->add('note1', 'text', array(
                 'label' => '1行目',
                 'required' => false,
+                'attr' => array('maxlength' => $config['stext_len']),
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
@@ -106,6 +118,7 @@ class OrderPdfType extends AbstractType
             ->add('note2', 'text', array(
                 'label' => '2行目',
                 'required' => false,
+                'attr' => array('maxlength' => $config['stext_len']),
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
@@ -113,17 +126,17 @@ class OrderPdfType extends AbstractType
             ->add('note3', 'text', array(
                 'label' => '3行目',
                 'required' => false,
+                'attr' => array('maxlength' => $config['stext_len']),
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**
+     * Get name method (form factory name).
      *
-     * @ERROR!!!
-     *
+     * @return string
      */
     public function getName()
     {

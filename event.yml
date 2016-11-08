@@ -2,11 +2,9 @@
 # Event fock
 #
 
-# admin page event
-eccube.event.route.admin_order.response:
-    - [onResponseAdminOrderPdfBefore, NORMAL]
-eccube.event.route.admin_order_page.response:
-    - [onResponseAdminOrderPdfBefore, NORMAL]
+# New hookpoint for version >= 3.0.9
+Admin/Order/index.twig:
+    - [onAdminOrderRender, NORMAL]
 
 # deprecated event (for v3.0.0 - 3.0.8)
 eccube.event.render.admin_order.before:
