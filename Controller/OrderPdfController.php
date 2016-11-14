@@ -12,6 +12,7 @@ namespace Plugin\OrderPdf\Controller;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Plugin\OrderPdf\Repository\OrderPdfRepository;
 use Plugin\OrderPdf\Service\OrderPdfService;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,8 +89,10 @@ class OrderPdfController extends AbstractController
         /* @var OrderPdfService $service */
         $service = $app['eccube.plugin.order_pdf.service.order_pdf'];
 
+        $arrData = $form->getData();
+
         // 購入情報からPDFを作成する
-        $status = $service->makePdf($form->getData());
+        $status = $service->makePdf($arrData);
 
         // 異常終了した場合の処理
         if (!$status) {
@@ -109,6 +112,13 @@ class OrderPdfController extends AbstractController
 
         // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名をreceipt.pdfに指定
         $response->headers->set('Content-Disposition', 'attachment; filename="'.$service->getPdfFileName().'"');
+
+        // Save input to DB
+        $arrData['admin'] = $app->user();
+        /* @var OrderPdfRepository $repos */
+        $repos = $app['eccube.plugin.order_pdf.repository.order_pdf'];
+
+        $repos->save($arrData);
 
         return $response;
     }

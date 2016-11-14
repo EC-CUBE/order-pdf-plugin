@@ -14,7 +14,7 @@ use Plugin\OrderPdf\Form\Type\OrderPdfType;
 use Plugin\OrderPdf\Service\OrderPdfService;
 use Silex\Application as BaseApplication;
 use Silex\ServiceProviderInterface;
-use Silex\Translator;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -29,6 +29,11 @@ class OrderPdfServiceProvider implements ServiceProviderInterface
      */
     public function register(BaseApplication $app)
     {
+        // Repository
+        $app['eccube.plugin.order_pdf.repository.order_pdf'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Plugin\OrderPdf\Entity\OrderPdf');
+        });
+
         // ============================================================
         // コントローラの登録
         // ============================================================
@@ -61,7 +66,7 @@ class OrderPdfServiceProvider implements ServiceProviderInterface
         // ============================================================
         // メッセージ登録
         // ============================================================
-        $app['translator'] = $app->share($app->extend('translator', function ($translator, BaseApplication $app) {
+        $app['translator'] = $app->share($app->extend('translator', function (Translator $translator, BaseApplication $app) {
             $file = __DIR__.'/../Resource/locale/message.'.$app['locale'].'.yml';
             if (file_exists($file)) {
                 $translator->addResource('yaml', $file, $app['locale']);
