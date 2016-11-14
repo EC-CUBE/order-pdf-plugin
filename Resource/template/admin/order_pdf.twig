@@ -32,84 +32,84 @@
                         <table class="table table-striped">
                             <tbody>
 
-                                {# 注文番号 #}
-                                <tr>
-                                    <th class="col-sm-2"><label class="control-label">注文番号</label></th>
-                                    <td>
-                                        <div class="col-sm-9 col-lg-10">
-                                            {{ form_widget(form.ids) }}
-                                            {{ form_errors(form.ids) }}
-                                        </div>
-                                    </td>
-                                </tr>
-                                {# 発行日 #}
-                                <tr>
-                                    <th><label class="control-label">発行日</label></th>
-                                    <td>
-                                        <div class="col-sm-9 col-lg-10">
-                                            {{ form_widget(form.issue_date) }}
-                                            {{ form_errors(form.issue_date) }}
-                                        </div>
-                                    </td>
-                                </tr>
-                                {# 帳票タイトル #}
-                                <tr>
-                                    <th><label class="control-label">帳票タイトル</label></th>
-                                    <td>
-                                        <div class="col-sm-9 col-lg-10">
-                                            {{ form_widget(form.title) }}
-                                            {{ form_errors(form.title) }}
-                                        </div>
-                                    </td>
-                                </tr>
-                                {# メッセージ #}
-                                <tr>
-                                    <th><label class="control-label">メッセージ</label></th>
-                                    <td>
-                                        {# メッセージ1行目 #}
-                                        {{ form_label(form.message1) }}
-                                        <div class="col-sm-9 col-lg-10">
-                                            {{ form_widget(form.message1) }}
-                                            {{ form_errors(form.message1) }}
-                                        </div>
-                                        {# メッセージ2行目 #}
-                                        {{ form_label(form.message2) }}
-                                        <div class="col-sm-9 col-lg-10">
-                                            {{ form_widget(form.message2) }}
-                                            {{ form_errors(form.message2) }}
-                                        </div>
-                                        {# メッセージ3行目 #}
-                                        {{ form_label(form.message3) }}
-                                        <div class="col-sm-9 col-lg-10">
-                                            {{ form_widget(form.message3) }}
-                                            {{ form_errors(form.message3) }}
-                                        </div>
-                                    </td>
-                                </tr>
-                                {# 備考 #}
-                                <tr>
-                                    <th valign="middle"><label class="control-label">備考</label></th>
-                                    <td>
-                                        {# 備考1行目 #}
-                                        {{ form_label(form.note1) }}
-                                        <div class="col-sm-9 col-lg-10">
-                                            {{ form_widget(form.note1) }}
-                                            {{ form_errors(form.note1) }}
-                                        </div>
-                                        {# 備考2行目 #}
-                                        {{ form_label(form.note2) }}
-                                        <div class="col-sm-9 col-lg-10">
-                                            {{ form_widget(form.note2) }}
-                                            {{ form_errors(form.note2) }}
-                                        </div>
-                                        {# 備考3行目 #}
-                                        {{ form_label(form.note3) }}
-                                        <div class="col-sm-9 col-lg-10">
-                                            {{ form_widget(form.note3) }}
-                                            {{ form_errors(form.note3) }}
-                                        </div>
-                                    </td>
-                                </tr>
+                            {# 注文番号 #}
+                            <tr>
+                                <th class="col-sm-2"><label class="control-label">注文番号</label></th>
+                                <td>
+                                    <div class="col-sm-9 col-lg-10">
+                                        {{ form_widget(form.ids) }}
+                                        {{ form_errors(form.ids) }}
+                                    </div>
+                                </td>
+                            </tr>
+                            {# 発行日 #}
+                            <tr>
+                                <th><label class="control-label">発行日</label></th>
+                                <td>
+                                    <div class="col-sm-9 col-lg-10">
+                                        {{ form_widget(form.issue_date) }}
+                                        {{ form_errors(form.issue_date) }}
+                                    </div>
+                                </td>
+                            </tr>
+                            {# 帳票タイトル #}
+                            <tr>
+                                <th><label class="control-label">帳票タイトル</label></th>
+                                <td>
+                                    <div class="col-sm-9 col-lg-10">
+                                        {{ form_widget(form.title) }}
+                                        {{ form_errors(form.title) }}
+                                    </div>
+                                </td>
+                            </tr>
+                            {# メッセージ #}
+                            <tr>
+                                <th><label class="control-label">メッセージ</label></th>
+                                <td>
+                                    {# メッセージ1行目 #}
+                                    {{ form_label(form.message1) }}
+                                    <div class="col-sm-9 col-lg-10">
+                                        {{ form_widget(form.message1) }}
+                                        {{ form_errors(form.message1) }}
+                                    </div>
+                                    {# メッセージ2行目 #}
+                                    {{ form_label(form.message2) }}
+                                    <div class="col-sm-9 col-lg-10">
+                                        {{ form_widget(form.message2) }}
+                                        {{ form_errors(form.message2) }}
+                                    </div>
+                                    {# メッセージ3行目 #}
+                                    {{ form_label(form.message3) }}
+                                    <div class="col-sm-9 col-lg-10">
+                                        {{ form_widget(form.message3) }}
+                                        {{ form_errors(form.message3) }}
+                                    </div>
+                                </td>
+                            </tr>
+                            {# 備考 #}
+                            <tr>
+                                <th valign="middle"><label class="control-label">備考</label></th>
+                                <td>
+                                    {# 備考1行目 #}
+                                    {{ form_label(form.note1) }}
+                                    <div class="col-sm-9 col-lg-10">
+                                        {{ form_widget(form.note1) }}
+                                        {{ form_errors(form.note1) }}
+                                    </div>
+                                    {# 備考2行目 #}
+                                    {{ form_label(form.note2) }}
+                                    <div class="col-sm-9 col-lg-10">
+                                        {{ form_widget(form.note2) }}
+                                        {{ form_errors(form.note2) }}
+                                    </div>
+                                    {# 備考3行目 #}
+                                    {{ form_label(form.note3) }}
+                                    <div class="col-sm-9 col-lg-10">
+                                        {{ form_widget(form.note3) }}
+                                        {{ form_errors(form.note3) }}
+                                    </div>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -126,6 +126,25 @@
                                             onclick="document.order_pdf_form.submit();">この内容で作成する
                                     </button>
                                 </div>
+
+                            </div>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <button class="btn btn-default btn-block btn-lg" id="reset">リセット
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <a id="back" href="#">検索画面に戻る
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -136,4 +155,27 @@
             <!-- /.col -->
         </div>
     </form>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(function () {
+            $("#reset").click(function (_e) {
+                _e.preventDefault();
+                $("input[name='admin_order_pdf[title]']").val('{{ 'admin.order_pdf.title.default'|trans }}');
+                $("input[name='admin_order_pdf[issue_date]']").val('{{ "now"|date("Y-m-d") }}');
+                $("input[name='admin_order_pdf[message1]']").val('{{ 'admin.order_pdf.message1.default'|trans }}');
+                $("input[name='admin_order_pdf[message2]']").val('{{ 'admin.order_pdf.message2.default'|trans }}');
+                $("input[name='admin_order_pdf[message3]']").val('{{ 'admin.order_pdf.message3.default'|trans }}');
+                $("input[name='admin_order_pdf[note1]']").val('');
+                $("input[name='admin_order_pdf[note2]']").val('');
+                $("input[name='admin_order_pdf[note3]']").val('');
+            });
+
+            $("#back").click(function (event) {
+                event.preventDefault();
+                history.back(1);
+            });
+        });
+    </script>
 {% endblock %}
