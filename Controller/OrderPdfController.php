@@ -37,9 +37,6 @@ class OrderPdfController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        /* @var Form $form */
-        $form = $app['form.factory']->createBuilder('admin_order_pdf')->getForm();
-
         // requestから受注番号IDの一覧を取得する
         $ids = $this->getIds($request);
 
@@ -48,6 +45,14 @@ class OrderPdfController extends AbstractController
 
             return $app->redirect($app->url('admin_order'));
         }
+
+        /* @var OrderPdfRepository $repos */
+        $repos = $app['eccube.plugin.order_pdf.repository.order_pdf'];
+
+        $OrderPdf = $repos->find($app->user());
+
+        /* @var Form $form */
+        $form = $app['form.factory']->createBuilder('admin_order_pdf', $OrderPdf)->getForm();
 
         // Formへの設定
         $form->get('ids')->setData(implode(',', $ids));

@@ -60,7 +60,7 @@ class OrderPdfType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'required' => true,
-                'data' => new \DateTime(),
+                'empty_data' => new \DateTime(),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\DateTime(),
@@ -69,7 +69,7 @@ class OrderPdfType extends AbstractType
             ->add('title', 'text', array(
                 'label' => '帳票タイトル',
                 'required' => false,
-                'data' => $this->app->trans('admin.order_pdf.title.default'),
+                'empty_data' => $this->app->trans('admin.order_pdf.title.default'),
                 'attr' => array('maxlength' => $config['stext_len']),
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['stext_len'])),
@@ -79,7 +79,7 @@ class OrderPdfType extends AbstractType
             ->add('message1', 'text', array(
                 'label' => '1行目',
                 'required' => false,
-                'data' => $this->app->trans('admin.order_pdf.message1.default'),
+                'empty_data' => $this->app->trans('admin.order_pdf.message1.default'),
                 'attr' => array('maxlength' => $config['order_pdf_message_len']),
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['order_pdf_message_len'])),
@@ -89,7 +89,7 @@ class OrderPdfType extends AbstractType
             ->add('message2', 'text', array(
                 'label' => '2行目',
                 'required' => false,
-                'data' => $this->app->trans('admin.order_pdf.message2.default'),
+                'empty_data' => $this->app->trans('admin.order_pdf.message2.default'),
                 'attr' => array('maxlength' => $config['order_pdf_message_len']),
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['order_pdf_message_len'])),
@@ -99,7 +99,7 @@ class OrderPdfType extends AbstractType
             ->add('message3', 'text', array(
                 'label' => '3行目',
                 'required' => false,
-                'data' => $this->app->trans('admin.order_pdf.message3.default'),
+                'empty_data' => $this->app->trans('admin.order_pdf.message3.default'),
                 'attr' => array('maxlength' => $config['order_pdf_message_len']),
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['order_pdf_message_len'])),

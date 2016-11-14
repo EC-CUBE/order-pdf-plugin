@@ -23,6 +23,12 @@ use Plugin\OrderPdf\Entity\OrderPdf;
  */
 class OrderPdfRepository extends EntityRepository
 {
+    /**
+     * Save admin history.
+     *
+     * @param array $arrData
+     * @return bool
+     */
     public function save(array $arrData)
     {
         /**
@@ -30,7 +36,6 @@ class OrderPdfRepository extends EntityRepository
          */
         $Member = $arrData['admin'];
         $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
         try {
             $OrderPdf = $this->find($Member);
             if (!$OrderPdf) {
@@ -44,15 +49,12 @@ class OrderPdfRepository extends EntityRepository
                 ->setMessage2($arrData['message2'])
                 ->setMessage3($arrData['message3'])
                 ->setNote1($arrData['note1'])
-                ->setNote2($arrData['mote2'])
+                ->setNote2($arrData['note2'])
                 ->setNote3($arrData['note3'])
                 ->setDelFlg(Constant::DISABLED);
             $em->persist($OrderPdf);
             $em->flush($OrderPdf);
-            $em->getConnection()->commit();
         } catch (\Exception $e) {
-            $em->getConnection()->rollBack();
-
             return false;
         }
 

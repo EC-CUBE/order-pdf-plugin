@@ -4,3 +4,5 @@ code: OrderPdf
 version: 1.0.0
 service:
     - OrderPdfServiceProvider
+orm.path:
+    - /Resource/doctrine

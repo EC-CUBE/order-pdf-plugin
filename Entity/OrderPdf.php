@@ -13,10 +13,15 @@ namespace Plugin\OrderPdf\Entity;
 use Eccube\Entity\AbstractEntity;
 
 /**
- * Class Maker.
+ * Class OrderPdf.
  */
 class OrderPdf extends AbstractEntity
 {
+    /**
+     * @var string
+     */
+    private $ids;
+
     /**
      * @var int
      */
@@ -76,6 +81,30 @@ class OrderPdf extends AbstractEntity
      * @var \DateTime
      */
     private $update_date;
+
+    /**
+     * Set order id.
+     *
+     * @param string $ids
+     *
+     * @return OrderPdf
+     */
+    public function setIds($ids)
+    {
+        $this->ids = $ids;
+
+        return $this;
+    }
+
+    /**
+     * Get order.
+     *
+     * @return string
+     */
+    public function getIds()
+    {
+        return $this->ids;
+    }
 
     /**
      * Set member id.

@@ -35,13 +35,6 @@ class Version201611111300 extends AbstractMigration
     );
 
     /**
-     * @var array sequence
-     */
-    protected $sequence = array(
-        'plg_order_pdf_order_pdf_id_seq',
-    );
-
-    /**
      * Up method
      *
      * @param Schema $schema
@@ -73,23 +66,9 @@ class Version201611111300 extends AbstractMigration
                     $schema->dropTable($table->getName());
                 }
             }
-            // シーケンス削除
-            foreach ($schemaFromMetadata->getSequences() as $sequence) {
-                if ($schema->hasSequence($sequence->getName())) {
-                    $schema->dropSequence($sequence->getName());
-                }
-            }
         } else {
             if ($schema->hasTable(self::TABLE)) {
                 $schema->dropTable(self::TABLE);
-            }
-        }
-
-        if ($this->connection->getDatabasePlatform()->getName() == 'postgresql') {
-            foreach ($this->sequence as $sequence) {
-                if ($schema->hasSequence($sequence)) {
-                    $schema->dropSequence($sequence);
-                }
             }
         }
     }

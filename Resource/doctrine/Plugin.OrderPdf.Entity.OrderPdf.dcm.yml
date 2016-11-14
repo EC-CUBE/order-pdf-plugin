@@ -53,4 +53,5 @@ Plugin\OrderPdf\Entity\OrderPdf:
         update_date:
             type: datetime
             nullable: false
+
     lifecycleCallbacks: {  }
