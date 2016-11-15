@@ -12,6 +12,8 @@ namespace Plugin\OrderPdf\Controller;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Util\EntityUtil;
+use Plugin\OrderPdf\Entity\OrderPdf;
 use Plugin\OrderPdf\Repository\OrderPdfRepository;
 use Plugin\OrderPdf\Service\OrderPdfService;
 use Symfony\Component\Form\Form;
@@ -37,7 +39,7 @@ class OrderPdfController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        // requestから受注番号IDの一覧を取得する
+        // requestから受注番号IDの一覧を取得する.
         $ids = $this->getIds($request);
 
         if (count($ids) == 0) {
@@ -51,6 +53,15 @@ class OrderPdfController extends AbstractController
         $repos = $app['eccube.plugin.order_pdf.repository.order_pdf'];
 
         $OrderPdf = $repos->find($app->user());
+
+        if (EntityUtil::isEmpty($OrderPdf)) {
+            $OrderPdf = new OrderPdf();
+            $OrderPdf->setIssueDate(new \DateTime())
+                ->setTitle($app->trans('admin.order_pdf.title.default'))
+                ->setMessage1($app->trans('admin.order_pdf.message1.default'))
+                ->setMessage2($app->trans('admin.order_pdf.message2.default'))
+                ->setMessage3($app->trans('admin.order_pdf.message3.default'));
+        }
 
         /* @var Form $form */
         $form = $app['form.factory']->createBuilder('admin_order_pdf', $OrderPdf)->getForm();
@@ -122,6 +133,7 @@ class OrderPdfController extends AbstractController
 
         // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名をreceipt.pdfに指定
         $response->headers->set('Content-Disposition', 'attachment; filename="'.$service->getPdfFileName().'"');
+        log_info('OrderPdf download success!', array('Order ID' => implode(',', $this->getIds($request))));
 
         // Save input to DB
         $arrData['admin'] = $app->user();

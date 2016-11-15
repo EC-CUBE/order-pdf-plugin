@@ -1,6 +1,7 @@
 # order-pdf-plugin
-[![Build Status](https://travis-ci.org/EC-CUBE/order-pdf-plugin.svg?branch=master)](https://travis-ci.org/EC-CUBE/order-pdf-plugin)
-[![Build status](https://ci.appveyor.com/api/projects/status/l5eoakt9828yorx9?svg=true)](https://ci.appveyor.com/project/ECCUBE/order-pdf-plugin)
+[![Build Status](https://travis-ci.org/eccubevn/order-pdf-plugin.svg?branch=order-pdf-renew)](https://travis-ci.org/eccubevn/order-pdf-plugin)
+[![Build status](https://ci.appveyor.com/api/projects/status/f4pdw9riykju7xlf/branch/order-pdf-renew?svg=true)](https://ci.appveyor.com/project/lqdung-lockon/order-pdf-plugin/branch/order-pdf-renew)
+[![Coverage Status](https://coveralls.io/repos/github/eccubevn/order-pdf-plugin/badge.svg?branch=order-pdf-renew)](https://coveralls.io/github/eccubevn/order-pdf-plugin?branch=order-pdf-renew)
 
 帳票プラグイン
 
