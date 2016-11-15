@@ -41,7 +41,7 @@ class Version201611111300 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        if (Version::isSupport()) {
+        if (Version::isSupportGetInstanceFunction()) {
             $this->createOrderPdf($schema);
         } else {
             $this->createOrderPdfForOldVersion($schema);
@@ -55,7 +55,7 @@ class Version201611111300 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        if (Version::isSupport()) {
+        if (Version::isSupportGetInstanceFunction()) {
             $app = Application::getInstance();
             $meta = $this->getMetadata($app['orm.em']);
             $tool = new SchemaTool($app['orm.em']);

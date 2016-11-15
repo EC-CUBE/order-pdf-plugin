@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Order Pdf plugin
+ * This file is part of the OrderPdf plugin
  *
  * Copyright (C) 2016 LOCKON CO.,LTD. All Rights Reserved.
  *
@@ -19,15 +19,22 @@ use Eccube\Common\Constant;
 class Version
 {
     /**
-     * Check support in version Ec cube.
-     *
-     * @param string $version
-     * @param string $operation
+     * Check version to support get instance function. (monolog, new style, ...)
      *
      * @return bool|int|mixed|void
      */
-    public static function isSupport($version = '3.0.9', $operation = '>=')
+    public static function isSupportGetInstanceFunction()
     {
-        return version_compare(Constant::VERSION, $version, $operation);
+        return version_compare(Constant::VERSION, '3.0.9', '>=');
+    }
+
+    /**
+     * Check version to support new log function.
+     *
+     * @return bool|int|mixed|void
+     */
+    public static function isSupportLogFunction()
+    {
+        return version_compare(Constant::VERSION, '3.0.12', '>=');
     }
 }

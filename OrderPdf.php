@@ -45,6 +45,8 @@ class OrderPdf
      */
     public function onAdminOrderRender(TemplateEvent $event)
     {
+        log_info('Event: Order pdf hook into the order search render start.');
+
         /**
          * @var \Twig_Environment $twig
          */
@@ -59,6 +61,7 @@ class OrderPdf
         $twigSource = $this->legacyEvent->renderPosition($twigSource, $twigAppend);
 
         $event->setSource($twigSource);
+        log_info('Event: Order pdf hook into the order search render end.');
     }
 
     /**
@@ -78,10 +81,12 @@ class OrderPdf
     }
 
     /**
+     * Check to support new hookpoint.
+     *
      * @return bool v3.0.9以降のフックポイントに対応しているか？
      */
     private function supportNewHookPoint()
     {
-        return Version::isSupport();
+        return Version::isSupportGetInstanceFunction();
     }
 }

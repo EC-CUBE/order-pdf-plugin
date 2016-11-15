@@ -12,10 +12,14 @@ namespace Plugin\OrderPdf\ServiceProvider;
 
 use Plugin\OrderPdf\Form\Type\OrderPdfType;
 use Plugin\OrderPdf\Service\OrderPdfService;
+use Plugin\OrderPdf\Utils\Version;
 use Silex\Application as BaseApplication;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Yaml\Yaml;
+
+// include log functions (for 3.0.0 - 3.0.11)
+require_once(__DIR__.'/../log.php');
 
 /**
  * Class OrderPdfServiceProvider.
@@ -89,6 +93,11 @@ class OrderPdfServiceProvider implements ServiceProviderInterface
 
             return $config;
         }));
+
+        // initialize logger (for 3.0.0 - 3.0.8)
+        if (!Version::isSupportGetInstanceFunction()) {
+            eccube_log_init($app);
+        }
     }
 
     /**

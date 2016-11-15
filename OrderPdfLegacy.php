@@ -49,16 +49,20 @@ class OrderPdfLegacy
      */
     public function onRenderAdminOrderPdfBefore(FilterResponseEvent $event)
     {
+        log_info('EventLegacy: The Order pdf hook into the order search start');
+
         if (!$this->app->isGranted('ROLE_ADMIN')) {
+            log_info('EventLegacy: You need permission manager to be able to use this function.');
+
             return;
         }
 
-        $request = $event->getRequest();
         $response = $event->getResponse();
-        $id = $request->attributes->get('id');
 
-        $response->setContent($this->getHtml($request, $response, $id));
+        $response->setContent($this->getHtml($response));
         $event->setResponse($response);
+
+        log_info('EventLegacy: The Order pdf hook into the order search end');
     }
 
     /**
@@ -109,13 +113,11 @@ class OrderPdfLegacy
     /**
      * EC-CUBEの受注マスター画面のHTMLを取得し、帳票関連項目を書き込む
      *
-     * @param Request  $request
      * @param Response $response
-     * @param int      $id
      *
      * @return mixed
      */
-    private function getHtml($request, $response, $id)
+    private function getHtml($response)
     {
 
         // 検索結果一覧の下部に帳票出力を追加する

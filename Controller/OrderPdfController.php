@@ -42,6 +42,7 @@ class OrderPdfController extends AbstractController
 
         if (count($ids) == 0) {
             $app->addError('admin.order_pdf.parameter.notfound', 'admin');
+            log_info('The Order cannot found!');
 
             return $app->redirect($app->url('admin_order'));
         }
@@ -80,11 +81,14 @@ class OrderPdfController extends AbstractController
         $form->handleRequest($request);
 
         if (!$form->isSubmitted()) {
+            log_error('Download with bad method! Allow post only!');
             throw new BadRequestHttpException();
         }
 
         // Validation
         if (!$form->isValid()) {
+            log_info('The parameter is invalid!');
+
             return $app->render('OrderPdf/Resource/template/admin/order_pdf.twig', array(
                 'form' => $form->createView(),
             ));
@@ -102,6 +106,7 @@ class OrderPdfController extends AbstractController
         // 異常終了した場合の処理
         if (!$status) {
             $app->addError('admin.order_pdf.download.failure', 'admin');
+            log_info('Unable to create pdf files! Process have problems!');
 
             return $app->render('OrderPdf/Resource/template/admin/order_pdf.twig', array(
                 'form' => $form->createView(),
