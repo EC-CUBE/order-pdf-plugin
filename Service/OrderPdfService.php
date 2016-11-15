@@ -64,9 +64,6 @@ class OrderPdfService extends AbstractFPDIService
     /** 最後に処理した注文番号 @var string */
     private $lastOrderId = null;
 
-    /** 処理する注文番号件数 @var int */
-    private $orderIdCnt = 0;
-
     // --------------------------------------
     // Font情報のバックアップデータ
     /** @var string フォント名 */
@@ -152,9 +149,6 @@ class OrderPdfService extends AbstractFPDIService
 
         // 注文番号をStringからarrayに変換
         $ids = explode(',', $formData['ids']);
-
-        // 注文番号の総件数を保持する
-        $this->orderIdCnt = count($ids);
 
         // 空文字列の場合のデフォルトメッセージを設定する
         $this->setDefaultData($formData);

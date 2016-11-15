@@ -11,7 +11,6 @@
 namespace Plugin\OrderPdf;
 
 use Eccube\Application;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\DomCrawler\Crawler;
@@ -117,7 +116,7 @@ class OrderPdfLegacy
      *
      * @return mixed
      */
-    private function getHtml($response)
+    private function getHtml(Response $response)
     {
 
         // 検索結果一覧の下部に帳票出力を追加する

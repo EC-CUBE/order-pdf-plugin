@@ -156,18 +156,6 @@ class OrderPdfController extends AbstractController
     {
         $isList = array();
 
-        // -----------------------------
-        // POSTリクエストの場合の処理
-        // ボタンのバージョン
-        // foreach ($request->request->all() as $key => $val) {
-        // // キーが一致
-        // if(preg_match('/^ids\d+$/', $key)) {
-        // if (!empty($val) && $val == 'on') {
-        // $isList[] = intval(str_replace("ids", "", $key));
-        // }
-        // }
-        // -----------------------------
-
         // その他メニューのバージョン
         $queryString = $request->getQueryString();
 
