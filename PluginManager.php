@@ -12,12 +12,31 @@ namespace Plugin\OrderPdf;
 
 use Eccube\Application;
 use Eccube\Plugin\AbstractPluginManager;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class PluginManager.
  */
 class PluginManager extends AbstractPluginManager
 {
+    /**
+     * @var string
+     */
+    private $logoName = 'logo.png';
+
+    /**
+     * @var string
+     */
+    private $logoPath;
+
+    /**
+     * PluginManager constructor.
+     */
+    public function __construct()
+    {
+        $this->logoPath = __DIR__.'/Resource/template/'.$this->logoName;
+    }
+
     /**
      * Install.
      *
@@ -68,6 +87,48 @@ class PluginManager extends AbstractPluginManager
      */
     public function update($config, $app)
     {
+        // Backup logo before update.
+        $this->backupLogo($config);
+
+        // Update
         $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migration', $config['code']);
+
+        // Rollback to old logo
+        $this->rollBackLogo($config);
+        // Remove temp
+        $this->removeLogo($config);
+    }
+
+    /**
+     * Backup logo before update.
+     *
+     * @param array $config
+     */
+    private function backupLogo($config)
+    {
+        $file = new Filesystem();
+        $file->copy($this->logoPath, $config['template_realdir'].'/'.$this->logoName);
+    }
+
+    /**
+     * Remove logo.
+     *
+     * @param array $config
+     */
+    private function removeLogo($config)
+    {
+        $file = new Filesystem();
+        $file->remove($config['template_realdir'].'/'.$this->logoName);
+    }
+
+    /**
+     * Roll back to old logo.
+     *
+     * @param array $config
+     */
+    private function rollBackLogo($config)
+    {
+        $file = new Filesystem();
+        $file->copy($config['template_realdir'].'/'.$this->logoName, $this->logoPath);
     }
 }
