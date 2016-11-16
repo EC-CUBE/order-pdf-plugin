@@ -10,6 +10,8 @@
 
 namespace Plugin\OrderPdf\ServiceProvider;
 
+use Plugin\OrderPdf\Event\OrderPdf;
+use Plugin\OrderPdf\Event\OrderPdfLegacy;
 use Plugin\OrderPdf\Form\Type\OrderPdfType;
 use Plugin\OrderPdf\Service\OrderPdfService;
 use Plugin\OrderPdf\Utils\Version;
@@ -36,6 +38,16 @@ class OrderPdfServiceProvider implements ServiceProviderInterface
         // Repository
         $app['eccube.plugin.order_pdf.repository.order_pdf'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Plugin\OrderPdf\Entity\OrderPdf');
+        });
+
+        // Order pdf event
+        $app['eccube.plugin.order_pdf.event.order_pdf'] = $app->share(function () use ($app) {
+            return new OrderPdf($app);
+        });
+
+        // Order pdf legacy event
+        $app['eccube.plugin.order_pdf.event.order_pdf_legacy'] = $app->share(function () use ($app) {
+            return new OrderPdfLegacy($app);
         });
 
         // ============================================================

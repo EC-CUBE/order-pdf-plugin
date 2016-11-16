@@ -12,30 +12,28 @@ namespace Plugin\OrderPdf;
 
 use Eccube\Application;
 use Eccube\Event\TemplateEvent;
+use Plugin\OrderPdf\Event\OrderPdf;
+use Plugin\OrderPdf\Event\OrderPdfLegacy;
 use Plugin\OrderPdf\Utils\Version;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 /**
- * Class OrderPdf Event.
+ * Class OrderPdfEvent.
  */
-class OrderPdf
+class OrderPdfEvent
 {
     /**
      * @var Application
      */
     private $app;
 
-    private $legacyEvent;
-
     /**
-     * OrderPdf constructor.
-     *
-     * @param Application $app
+     * OrderPdfEvent constructor.
+     * @param \Silex\Application $app
      */
-    public function __construct(Application $app)
+    public function __construct($app)
     {
         $this->app = $app;
-        $this->legacyEvent = new OrderPdfLegacy($app);
     }
 
     /**
@@ -45,23 +43,9 @@ class OrderPdf
      */
     public function onAdminOrderRender(TemplateEvent $event)
     {
-        log_info('Event: Order pdf hook into the order search render start.');
-
-        /**
-         * @var \Twig_Environment $twig
-         */
-        $twig = $this->app['twig'];
-
-        $twigAppend = $twig->getLoader()->getSource('OrderPdf/Resource/template/admin/order_pdf_menu.twig');
-        /**
-         * @var string $twigSource twig template.
-         */
-        $twigSource = $event->getSource();
-
-        $twigSource = $this->legacyEvent->renderPosition($twigSource, $twigAppend);
-
-        $event->setSource($twigSource);
-        log_info('Event: Order pdf hook into the order search render end.');
+        /* @var OrderPdf $orderPdfEvent */
+        $orderPdfEvent = $this->app['eccube.plugin.order_pdf.event.order_pdf'];
+        $orderPdfEvent->onAdminOrderRender($event);
     }
 
     /**
@@ -77,7 +61,9 @@ class OrderPdf
             return;
         }
 
-        $this->legacyEvent->onRenderAdminOrderPdfBefore($event);
+        /* @var OrderPdfLegacy $eventLegacy */
+        $eventLegacy = $this->app['eccube.plugin.order_pdf.event.order_pdf_legacy'];
+        $eventLegacy->onRenderAdminOrderPdfBefore($event);
     }
 
     /**

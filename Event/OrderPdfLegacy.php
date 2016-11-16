@@ -8,9 +8,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\OrderPdf;
+namespace Plugin\OrderPdf\Event;
 
-use Eccube\Application;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\DomCrawler\Crawler;
@@ -21,23 +20,8 @@ use Symfony\Component\DomCrawler\Crawler;
  *
  * @deprecated support since 3.0.0, it will remove on 3.1
  */
-class OrderPdfLegacy
+class OrderPdfLegacy extends CommonEvent
 {
-    /**
-     * @var Application
-     */
-    private $app;
-
-    /**
-     * OrderPdfLegacy constructor.
-     *
-     * @param Application $app
-     */
-    public function __construct($app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * 受注マスター表示、検索ボタンクリック時のEvent Fork.
      * 下記の項目を追加する.
@@ -62,51 +46,6 @@ class OrderPdfLegacy
         $event->setResponse($response);
 
         log_info('EventLegacy: The Order pdf hook into the order search end');
-    }
-
-    /**
-     * Render position.
-     *
-     * @param string $html
-     * @param string $part
-     *
-     * @return string
-     */
-    public function renderPosition($html, $part)
-    {
-        // For old and new ec-cube version
-        // Search group
-        // Group 1
-        $search = '/(<li\s+id="dropmenu"[\s\S]*)'; // Points to start the search.
-        // Group 2
-        $search .= '(<ul\s+class="dropdown\-menu"[\s\S]*)'; // start drop down section.
-        // Group 3
-        $search .= '(<\/li>[\n\s]*<\/ul>)'; // The end of the dropdown section.
-        // Group 4
-        $search .= '([\s\S]*<form\s+id="dropdown\-form")/'; // Points to end the search.
-
-        $arrMatch = array();
-        preg_match($search, $html, $arrMatch, PREG_OFFSET_CAPTURE);
-
-        if (!isset($arrMatch[4])) {
-            return $html;
-        }
-        $oldHtml = $arrMatch[2][0];
-
-        // first html
-        $oldHtmlStartPos = $arrMatch[2][1];
-        $firstHalfHtml = substr($html, 0, $oldHtmlStartPos);
-
-        // end html
-        $oldHtmlEndPos = $arrMatch[3][1];
-        $endHalfHtml = substr($html, $oldHtmlEndPos);
-
-        // new html
-        $newHtml = str_replace('</ul>', $part.'</ul>', $oldHtml);
-
-        $html = $firstHalfHtml.$newHtml.$endHalfHtml;
-
-        return $html;
     }
 
     /**

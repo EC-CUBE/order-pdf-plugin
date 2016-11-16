@@ -45,6 +45,8 @@ class PluginManager extends AbstractPluginManager
      */
     public function install($config, $app)
     {
+        // Backup logo.
+        $this->backupLogo($app['config']);
     }
 
     /**
@@ -55,6 +57,9 @@ class PluginManager extends AbstractPluginManager
      */
     public function uninstall($config, $app)
     {
+        // Remove temp
+        $this->removeLogo($app['config']);
+
         $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migration', $config['code'], 0);
     }
 
@@ -66,6 +71,9 @@ class PluginManager extends AbstractPluginManager
      */
     public function enable($config, $app)
     {
+        // Backup logo.
+        $this->backupLogo($app['config']);
+
         $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migration', $config['code']);
     }
 
@@ -87,16 +95,12 @@ class PluginManager extends AbstractPluginManager
      */
     public function update($config, $app)
     {
-        // Backup logo before update.
-        $this->backupLogo($config);
+        $arrConfig = $app['config'];
+        // Rollback to old logo
+        $this->rollBackLogo($arrConfig);
 
         // Update
         $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migration', $config['code']);
-
-        // Rollback to old logo
-        $this->rollBackLogo($config);
-        // Remove temp
-        $this->removeLogo($config);
     }
 
     /**
@@ -107,7 +111,10 @@ class PluginManager extends AbstractPluginManager
     private function backupLogo($config)
     {
         $file = new Filesystem();
-        $file->copy($this->logoPath, $config['template_realdir'].'/'.$this->logoName);
+        if (!file_exists($this->logoPath)) {
+            return;
+        }
+        $file->copy($this->logoPath, $config['template_realdir'].'/'.$this->logoName, true);
     }
 
     /**
@@ -129,6 +136,10 @@ class PluginManager extends AbstractPluginManager
     private function rollBackLogo($config)
     {
         $file = new Filesystem();
-        $file->copy($config['template_realdir'].'/'.$this->logoName, $this->logoPath);
+        $sourcePath = $config['template_realdir'].'/'.$this->logoName;
+        if (!file_exists($sourcePath)) {
+            return;
+        }
+        $file->copy($sourcePath, $this->logoPath, true);
     }
 }
