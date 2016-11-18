@@ -73,6 +73,6 @@ class OrderPdfEvent
      */
     private function supportNewHookPoint()
     {
-        return Version::isSupportGetInstanceFunction();
+        return Version::isSupportVersion();
     }
 }

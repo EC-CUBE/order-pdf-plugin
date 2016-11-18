@@ -68,6 +68,11 @@ class OrderPdf extends AbstractEntity
     private $note3;
 
     /**
+     * @var bool
+     */
+    private $default;
+
+    /**
      * @var int
      */
     private $del_flg;
@@ -320,6 +325,30 @@ class OrderPdf extends AbstractEntity
         $this->note3 = $note3;
 
         return $this;
+    }
+
+    /**
+     * Set default to save.
+     *
+     * @param bool $isDefault
+     *
+     * @return OrderPdf
+     */
+    public function setDefault($isDefault)
+    {
+        $this->default = $isDefault;
+
+        return $this;
+    }
+
+    /**
+     * Get default.
+     *
+     * @return bool
+     */
+    public function getDefault()
+    {
+        return $this->default;
     }
 
     /**

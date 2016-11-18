@@ -9,9 +9,12 @@
  */
 namespace Plugin\OrderPdf\Tests\Web;
 
+use Eccube\Common\Constant;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
+use Plugin\OrderPdf\Entity\OrderPdf;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
 
@@ -99,6 +102,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $form['admin_order_pdf[note1]'] = $faker->text(50);
         $form['admin_order_pdf[note2]'] = $faker->text(50);
         $form['admin_order_pdf[note3]'] = $faker->text(50);
+        $form['admin_order_pdf[default]'] = 1;
         $client->submit($form);
         $this->actual = $client->getResponse()->headers->get('Content-Type');
         $this->expected = 'application/pdf';
@@ -136,6 +140,22 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
         $html = $crawler->filter('.alert')->html();
         $this->assertContains('注文番号がありません。', $html);
+    }
+
+    /**
+     * Order pdf download
+     */
+    public function testDownloadWithBadMethod()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\BadRequestHttpException');
+        /**
+         * @var Client $client
+         */
+        $client = $this->client;
+
+        $client->request('GET', $this->app->url('admin_order_pdf_download'));
+
+        $this->assertTrue($this->hasFailed());
     }
 
     /**
@@ -219,6 +239,63 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertContains('このたびはお買上げいただきありがとうございます。', $html);
         $this->assertContains('下記の内容にて納品させていただきます。', $html);
         $this->assertContains('ご確認くださいますよう、お願いいたします。', $html);
+
+        $form = $this->getForm($crawler);
+        $client->submit($form);
+
+        $this->actual = $client->getResponse()->headers->get('Content-Type');
+        $this->expected = 'application/pdf';
+        $this->verify();
+    }
+
+    /**
+     * Render order pdf download
+     */
+    public function testDownloadWithPreviousInputSuccess()
+    {
+        $Order = $this->createOrderForSearch();
+        $orderId = $Order->getId();
+        /**
+         * @var Client $client
+         */
+        $client = $this->client;
+
+        /**
+         * @var Generator $faker
+         */
+        $faker = $this->getFaker();
+        $OrderPdf = new OrderPdf();
+        $Admin = $this->app->user();
+        $mid = 2; // member default id.
+        if ($Admin instanceof Member) {
+            $mid = $Admin->getId();
+        }
+
+        $OrderPdf->setId($mid)
+            ->setIssueDate(new \DateTime())
+            ->setTitle($faker->text(50))
+            ->setMessage1($faker->text(30))
+            ->setMessage2($faker->text(30))
+            ->setMessage3($faker->text(30))
+            ->setNote1($faker->text(50))
+            ->setNote2($faker->text(50))
+            ->setNote3($faker->text(50))
+            ->setDelFlg(Constant::DISABLED);
+
+        $this->app['orm.em']->persist($OrderPdf);
+        $this->app['orm.em']->flush($OrderPdf);
+
+        $crawler = $client->request('GET', $this->app->url('admin_order_pdf').'?ids'.$orderId.'=on');
+        $html = $crawler->filter('.box-body')->html();
+
+        $this->assertContains((string) $orderId, $html);
+        $this->assertContains($OrderPdf->getTitle(), $html);
+        $this->assertContains($OrderPdf->getMessage1(), $html);
+        $this->assertContains($OrderPdf->getMessage2(), $html);
+        $this->assertContains($OrderPdf->getMessage3(), $html);
+        $this->assertContains($OrderPdf->getNote1(), $html);
+        $this->assertContains($OrderPdf->getNote2(), $html);
+        $this->assertContains($OrderPdf->getNote3(), $html);
 
         $form = $this->getForm($crawler);
         $client->submit($form);

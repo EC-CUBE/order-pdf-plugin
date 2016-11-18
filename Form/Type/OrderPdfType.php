@@ -126,6 +126,16 @@ class OrderPdfType extends AbstractType
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
+            ))
+            ->add('default', 'choice', array(
+                'choices'  => array(
+                    'Yes' => true,
+                    'No' => false,
+                ),
+                // *this line is important*
+                'choices_as_values' => true,
+                'expanded' => true,
+                'multiple' => false,
             ));
     }
 

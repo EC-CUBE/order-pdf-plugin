@@ -17,6 +17,7 @@ use Plugin\OrderPdf\Entity\OrderPdf;
 use Plugin\OrderPdf\Repository\OrderPdfRepository;
 use Plugin\OrderPdf\Service\OrderPdfService;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,11 +64,17 @@ class OrderPdfController extends AbstractController
                 ->setMessage3($app->trans('admin.order_pdf.message3.default'));
         }
 
+        /**
+         * @var FormBuilder $builder
+         */
+        $builder = $app['form.factory']->createBuilder('admin_order_pdf', $OrderPdf);
+
         /* @var Form $form */
-        $form = $app['form.factory']->createBuilder('admin_order_pdf', $OrderPdf)->getForm();
+        $form = $builder->getForm();
 
         // Formへの設定
         $form->get('ids')->setData(implode(',', $ids));
+        $form->get('default')->setData($request->get('default', false));
 
         return $app->render('OrderPdf/Resource/template/admin/order_pdf.twig', array(
             'form' => $form->createView(),
@@ -87,8 +94,13 @@ class OrderPdfController extends AbstractController
      */
     public function download(Application $app, Request $request)
     {
+        /**
+         * @var FormBuilder $builder
+         */
+        $builder = $app['form.factory']->createBuilder('admin_order_pdf');
+
         /* @var Form $form */
-        $form = $app['form.factory']->createBuilder('admin_order_pdf')->getForm();
+        $form = $builder->getForm();
         $form->handleRequest($request);
 
         if (!$form->isSubmitted()) {
@@ -135,12 +147,15 @@ class OrderPdfController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename="'.$service->getPdfFileName().'"');
         log_info('OrderPdf download success!', array('Order ID' => implode(',', $this->getIds($request))));
 
-        // Save input to DB
-        $arrData['admin'] = $app->user();
-        /* @var OrderPdfRepository $repos */
-        $repos = $app['eccube.plugin.order_pdf.repository.order_pdf'];
+        $isDefault = $arrData['default'];
+        if ($isDefault) {
+            // Save input to DB
+            $arrData['admin'] = $app->user();
+            /* @var OrderPdfRepository $repos */
+            $repos = $app['eccube.plugin.order_pdf.repository.order_pdf'];
 
-        $repos->save($arrData);
+            $repos->save($arrData);
+        }
 
         return $response;
     }

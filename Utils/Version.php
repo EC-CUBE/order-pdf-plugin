@@ -37,4 +37,17 @@ class Version
     {
         return version_compare(Constant::VERSION, '3.0.12', '>=');
     }
+
+    /**
+     * Check version to support by Ec-cube.
+     *
+     * @param string $version
+     * @param string $operation
+     *
+     * @return bool|int|mixed|void
+     */
+    public static function isSupportVersion($version = '3.0.9', $operation = '>=')
+    {
+        return version_compare(Constant::VERSION, $version, $operation);
+    }
 }
