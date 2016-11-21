@@ -35,7 +35,7 @@ class Version201611111300 extends AbstractMigration
     );
 
     /**
-     * Up method
+     * Up method.
      *
      * @param Schema $schema
      */
@@ -49,7 +49,7 @@ class Version201611111300 extends AbstractMigration
     }
 
     /**
-     * Down method
+     * Down method.
      *
      * @param Schema $schema
      */

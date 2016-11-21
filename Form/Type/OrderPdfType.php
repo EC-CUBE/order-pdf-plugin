@@ -128,7 +128,7 @@ class OrderPdfType extends AbstractType
                 ),
             ))
             ->add('default', 'choice', array(
-                'choices'  => array(
+                'choices' => array(
                     'Yes' => true,
                     'No' => false,
                 ),

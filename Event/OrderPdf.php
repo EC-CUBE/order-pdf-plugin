@@ -33,7 +33,7 @@ class OrderPdf extends CommonEvent
 
         $twigAppend = $twig->getLoader()->getSource('OrderPdf/Resource/template/admin/order_pdf_menu.twig');
         /**
-         * @var string $twigSource twig template.
+         * @var string twig template
          */
         $twigSource = $event->getSource();
 

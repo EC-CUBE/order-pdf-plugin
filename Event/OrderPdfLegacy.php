@@ -80,7 +80,7 @@ class OrderPdfLegacy extends CommonEvent
 
             $html = str_replace($form, $newForm, $html);
         } catch (\InvalidArgumentException $e) {
-            // no-op
+            log_error('Cannot found .dropdown-menu', array($e->getMessage()));
         }
 
         return html_entity_decode($html);

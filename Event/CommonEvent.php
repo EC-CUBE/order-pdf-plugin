@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Plugin\OrderPdf\Event;
 
 use Eccube\Application;
@@ -23,6 +24,7 @@ class CommonEvent
 
     /**
      * AbstractEvent constructor.
+     *
      * @param \Silex\Application $app
      */
     public function __construct($app)
@@ -40,16 +42,28 @@ class CommonEvent
      */
     public function renderPosition($html, $part)
     {
-        // For old and new ec-cube version
-        // Search group
-        // Group 1
-        $search = '/(<li\s+id="dropmenu"[\s\S]*)'; // Points to start the search.
-        // Group 2
-        $search .= '(<ul\s+class="dropdown\-menu"[\s\S]*)'; // start drop down section.
-        // Group 3
-        $search .= '(<\/li>[\n\s]*<\/ul>)'; // The end of the dropdown section.
-        // Group 4
-        $search .= '([\s\S]*<form\s+id="dropdown\-form")/'; // Points to end the search.
+        /**
+         * For old and new ec-cube version
+         * Search group
+         * Group 1
+         * Points to start the search.
+         */
+        $search = '/(<li\s+id="dropmenu"[\s\S]*)';
+        /*
+         * Group 2
+         * Start drop down section.
+         */
+        $search .= '(<ul\s+class="dropdown\-menu"[\s\S]*)';
+        /*
+         * Group 3
+         * The end of the dropdown section.
+         */
+        $search .= '(<\/li>[\n\s]*<\/ul>)';
+        /*
+         * Group 4
+         * Points to end the search.
+         */
+        $search .= '([\s\S]*<form\s+id="dropdown\-form")/';
 
         $arrMatch = array();
         preg_match($search, $html, $arrMatch, PREG_OFFSET_CAPTURE);

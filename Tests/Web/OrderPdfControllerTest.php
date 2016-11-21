@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Plugin\OrderPdf\Tests\Web;
 
 use Eccube\Common\Constant;
@@ -19,7 +20,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
 
 /**
- * Class OrderPdfControllerTest
+ * Class OrderPdfControllerTest.
  */
 class OrderPdfControllerTest extends AbstractAdminWebTestCase
 {
@@ -31,7 +32,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $Order = $this->createOrderForSearch();
         $orderId = $Order->getId();
         /**
-         * @var Crawler $crawler
+         * @var Crawler
          */
         $crawler = $this->client->request(
             'POST',
@@ -51,7 +52,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * Render order pdf download
+     * Render order pdf download.
      */
     public function testRenderDownloadWithDefault()
     {
@@ -75,7 +76,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * Render order pdf download
+     * Render order pdf download.
      */
     public function testRenderDownloadWithPreviousInput()
     {
@@ -122,7 +123,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * Order pdf download
+     * Order pdf download.
      */
     public function testDownloadIdInvalid()
     {
@@ -143,7 +144,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * Order pdf download
+     * Order pdf download.
      */
     public function testDownloadWithBadMethod()
     {
@@ -218,7 +219,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * Order pdf download
+     * Order pdf download.
      */
     public function testDownloadSuccess()
     {
@@ -249,7 +250,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * Render order pdf download
+     * Render order pdf download.
      */
     public function testDownloadWithPreviousInputSuccess()
     {

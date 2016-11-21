@@ -29,6 +29,7 @@ class OrderPdfEvent
 
     /**
      * OrderPdfEvent constructor.
+     *
      * @param \Silex\Application $app
      */
     public function __construct($app)

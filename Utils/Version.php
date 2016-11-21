@@ -19,7 +19,7 @@ use Eccube\Common\Constant;
 class Version
 {
     /**
-     * Check version to support get instance function. (monolog, new style, ...)
+     * Check version to support get instance function. (monolog, new style, ...).
      *
      * @return bool|int|mixed|void
      */

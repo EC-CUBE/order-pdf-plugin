@@ -27,6 +27,7 @@ class OrderPdfRepository extends EntityRepository
      * Save admin history.
      *
      * @param array $arrData
+     *
      * @return bool
      */
     public function save(array $arrData)
