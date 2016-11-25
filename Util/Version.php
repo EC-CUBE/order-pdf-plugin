@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\OrderPdf\Utils;
+namespace Plugin\OrderPdf\Util;
 
 use Eccube\Common\Constant;
 

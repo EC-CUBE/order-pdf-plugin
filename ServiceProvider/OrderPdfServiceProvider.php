@@ -14,7 +14,7 @@ use Plugin\OrderPdf\Event\OrderPdf;
 use Plugin\OrderPdf\Event\OrderPdfLegacy;
 use Plugin\OrderPdf\Form\Type\OrderPdfType;
 use Plugin\OrderPdf\Service\OrderPdfService;
-use Plugin\OrderPdf\Utils\Version;
+use Plugin\OrderPdf\Util\Version;
 use Silex\Application as BaseApplication;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Translation\Translator;

@@ -14,7 +14,7 @@ use Eccube\Application;
 use Eccube\Event\TemplateEvent;
 use Plugin\OrderPdf\Event\OrderPdf;
 use Plugin\OrderPdf\Event\OrderPdfLegacy;
-use Plugin\OrderPdf\Utils\Version;
+use Plugin\OrderPdf\Util\Version;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 /**
