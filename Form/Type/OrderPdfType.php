@@ -129,13 +129,15 @@ class OrderPdfType extends AbstractType
             ))
             ->add('default', 'choice', array(
                 'choices' => array(
-                    'Yes' => true,
-                    'No' => false,
+                    1 => 'Yes',
+                    0 => 'No',
                 ),
+                // symfony version? => document maybe wrong?
                 // *this line is important*
-                'choices_as_values' => true,
+                // 'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false,
+                'data' => 0,
             ));
     }
 

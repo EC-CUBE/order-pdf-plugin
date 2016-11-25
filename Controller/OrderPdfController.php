@@ -74,7 +74,6 @@ class OrderPdfController extends AbstractController
 
         // Formへの設定
         $form->get('ids')->setData(implode(',', $ids));
-        $form->get('default')->setData($request->get('default', false));
 
         return $app->render('OrderPdf/Resource/template/admin/order_pdf.twig', array(
             'form' => $form->createView(),
