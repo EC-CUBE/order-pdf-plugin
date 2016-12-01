@@ -387,7 +387,12 @@ class OrderPdfService extends AbstractFPDIService
         $this->SetFont(self::FONT_SJIS, '', 10);
 
         //ご注文日
-        $this->lfText(25, 125, $Order->getCreateDate()->format('Y/m/d H:i'), 10);
+        $orderDate = $Order->getCreateDate()->format('Y/m/d H:i');
+        if ($Order->getOrderDate()) {
+            $orderDate = $Order->getOrderDate()->format('Y/m/d H:i');
+        }
+
+        $this->lfText(25, 125, $orderDate , 10);
         //注文番号
         $this->lfText(25, 135, $Order->getId(), 10);
 

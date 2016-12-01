@@ -127,17 +127,9 @@ class OrderPdfType extends AbstractType
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
             ))
-            ->add('default', 'choice', array(
-                'choices' => array(
-                    1 => 'Yes',
-                    0 => 'No',
-                ),
-                // symfony version? => document maybe wrong?
-                // *this line is important*
-                // 'choices_as_values' => true,
-                'expanded' => true,
-                'multiple' => false,
-                'data' => 0,
+            ->add('default', 'checkbox', array(
+                'required' => false,
+                'label' => 'yes',
             ));
     }
 

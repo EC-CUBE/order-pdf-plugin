@@ -173,14 +173,14 @@
         $(function () {
             $("#reset").click(function (_e) {
                 _e.preventDefault();
-                $("input[name='admin_order_pdf[title]']").val('{{ 'admin.order_pdf.title.default'|trans }}');
+                $("input[name='admin_order_pdf[title]']").val('{{ form.vars.value.title }}');
                 $("input[name='admin_order_pdf[issue_date]']").val('{{ "now"|date("Y-m-d") }}');
-                $("input[name='admin_order_pdf[message1]']").val('{{ 'admin.order_pdf.message1.default'|trans }}');
-                $("input[name='admin_order_pdf[message2]']").val('{{ 'admin.order_pdf.message2.default'|trans }}');
-                $("input[name='admin_order_pdf[message3]']").val('{{ 'admin.order_pdf.message3.default'|trans }}');
-                $("input[name='admin_order_pdf[note1]']").val('');
-                $("input[name='admin_order_pdf[note2]']").val('');
-                $("input[name='admin_order_pdf[note3]']").val('');
+                $("input[name='admin_order_pdf[message1]']").val('{{ form.vars.value.message1 }}');
+                $("input[name='admin_order_pdf[message2]']").val('{{ form.vars.value.message2 }}');
+                $("input[name='admin_order_pdf[message3]']").val('{{ form.vars.value.message3 }}');
+                $("input[name='admin_order_pdf[note1]']").val('{{ form.vars.value.note1 }}');
+                $("input[name='admin_order_pdf[note2]']").val('{{ form.vars.value.note2 }}');
+                $("input[name='admin_order_pdf[note3]']").val('{{ form.vars.value.note3 }}');
             });
 
             $("#back").click(function (event) {

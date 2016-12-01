@@ -146,7 +146,7 @@ class OrderPdfController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename="'.$service->getPdfFileName().'"');
         log_info('OrderPdf download success!', array('Order ID' => implode(',', $this->getIds($request))));
 
-        $isDefault = $arrData['default'];
+        $isDefault = isset($arrData['default']) ? $arrData['default'] : false;
         if ($isDefault) {
             // Save input to DB
             $arrData['admin'] = $app->user();
