@@ -57,9 +57,7 @@ class OrderPdfLegacy extends CommonEvent
      */
     private function getHtml(Response $response)
     {
-
         // 検索結果一覧の下部に帳票出力を追加する
-
         // 受注管理-受注マスターのHTMLを取得し、DOM化
         $crawler = new Crawler($response->getContent());
 

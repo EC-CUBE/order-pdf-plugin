@@ -18,7 +18,7 @@ use Plugin\OrderPdf\Util\Version;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 /**
- * Class OrderPdfEvent.
+ * Class OrderPdf Event.
  */
 class OrderPdfEvent
 {
@@ -45,7 +45,7 @@ class OrderPdfEvent
     public function onAdminOrderRender(TemplateEvent $event)
     {
         /* @var OrderPdf $orderPdfEvent */
-        $orderPdfEvent = $this->app['eccube.plugin.order_pdf.event.order_pdf'];
+        $orderPdfEvent = $this->app['orderpdf.event.order_pdf'];
         $orderPdfEvent->onAdminOrderRender($event);
     }
 
@@ -63,7 +63,7 @@ class OrderPdfEvent
         }
 
         /* @var OrderPdfLegacy $eventLegacy */
-        $eventLegacy = $this->app['eccube.plugin.order_pdf.event.order_pdf_legacy'];
+        $eventLegacy = $this->app['orderpdf.event.order_pdf_legacy'];
         $eventLegacy->onRenderAdminOrderPdfBefore($event);
     }
 

@@ -19,19 +19,9 @@ use Eccube\Common\Constant;
 class Version
 {
     /**
-     * Check version to support get instance function. (monolog, new style, ...).
-     *
-     * @return bool|int|mixed|void
-     */
-    public static function isSupportGetInstanceFunction()
-    {
-        return version_compare(Constant::VERSION, '3.0.9', '>=');
-    }
-
-    /**
      * Check version to support new log function.
      *
-     * @return bool|int|mixed|void
+     * @return bool
      */
     public static function isSupportLogFunction()
     {
@@ -44,10 +34,22 @@ class Version
      * @param string $version
      * @param string $operation
      *
-     * @return bool|int|mixed|void
+     * @return bool
      */
     public static function isSupportVersion($version = '3.0.9', $operation = '>=')
     {
         return version_compare(Constant::VERSION, $version, $operation);
+    }
+
+    /**
+     * Check version to support method
+     *
+     * @param string $class
+     * @param string $method
+     * @return bool
+     */
+    public static function isSupportMethod($class = 'Eccube\Application', $method = 'getInstance')
+    {
+        return method_exists($class, $method);
     }
 }

@@ -19,7 +19,7 @@
 
 {% block main %}
     <form role="form" name="order_pdf_form" id="order_pdf_form" method="post"
-          action="{{ url('admin_order_pdf_download') }}">
+          action="{{ url('plugin_admin_order_pdf_download') }}">
         {{ form_widget(form._token) }}
         <div class="row" id="aside_wrap">
             <div class="col-md-9">

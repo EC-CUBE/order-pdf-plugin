@@ -44,7 +44,6 @@ class OrderPdfRepository extends EntityRepository
             }
 
             $OrderPdf->setId($Member->getId())
-                ->setIssueDate($arrData['issue_date'])
                 ->setTitle($arrData['title'])
                 ->setMessage1($arrData['message1'])
                 ->setMessage2($arrData['message2'])

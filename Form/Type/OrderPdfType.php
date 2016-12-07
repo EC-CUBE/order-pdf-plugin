@@ -60,7 +60,7 @@ class OrderPdfType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'required' => true,
-                'empty_data' => new \DateTime(),
+                'data' => new \DateTime(),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\DateTime(),

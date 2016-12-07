@@ -176,7 +176,7 @@ if (function_exists('eccube_log_init') === false) {
 }
 
 // 3.0.9以上の場合は初期化処理を行う.
-if (method_exists('Eccube\Application', 'getInstance') === true) {
+if (Version::isSupportMethod()) {
     $app = \Eccube\Application::getInstance();
     eccube_log_init($app);
 }

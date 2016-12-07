@@ -10,9 +10,6 @@ Plugin\OrderPdf\Entity\OrderPdf:
             id: true
             column: member_id
     fields:
-        issue_date:
-            type: datetime
-            nullable: true
         title:
             type: string
             length: 50

@@ -41,7 +41,7 @@ class Version201611111300 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        if (Version::isSupportGetInstanceFunction()) {
+        if (Version::isSupportMethod()) {
             $this->createOrderPdf($schema);
         } else {
             $this->createOrderPdfForOldVersion($schema);
@@ -55,7 +55,7 @@ class Version201611111300 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        if (Version::isSupportGetInstanceFunction()) {
+        if (Version::isSupportMethod()) {
             $app = Application::getInstance();
             $meta = $this->getMetadata($app['orm.em']);
             $tool = new SchemaTool($app['orm.em']);
@@ -107,10 +107,6 @@ class Version201611111300 extends AbstractMigration
         $table = $schema->createTable(self::TABLE);
         $table->addColumn('member_id', 'integer', array(
             'unsigned' => true,
-        ));
-
-        $table->addColumn('issue_date', 'datetime', array(
-            'notnull' => false,
         ));
 
         $table->addColumn('title', 'string', array(

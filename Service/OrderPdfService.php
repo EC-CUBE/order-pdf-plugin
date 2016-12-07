@@ -626,10 +626,10 @@ class OrderPdfService extends AbstractFPDIService
     protected function setDefaultData(array &$formData)
     {
         $defaultList = array(
-            'title' => $this->app->trans('admin.order_pdf.title.default'),
-            'message1' => $this->app->trans('admin.order_pdf.message1.default'),
-            'message2' => $this->app->trans('admin.order_pdf.message2.default'),
-            'message3' => $this->app->trans('admin.order_pdf.message3.default'),
+            'title' => $this->app->trans('admin.plugin.order_pdf.title.default'),
+            'message1' => $this->app->trans('admin.plugin.order_pdf.message1.default'),
+            'message2' => $this->app->trans('admin.plugin.order_pdf.message2.default'),
+            'message3' => $this->app->trans('admin.plugin.order_pdf.message3.default'),
         );
 
         foreach ($defaultList as $key => $value) {

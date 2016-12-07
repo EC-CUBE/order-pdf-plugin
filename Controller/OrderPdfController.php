@@ -44,24 +44,24 @@ class OrderPdfController extends AbstractController
         $ids = $this->getIds($request);
 
         if (count($ids) == 0) {
-            $app->addError('admin.order_pdf.parameter.notfound', 'admin');
+            $app->addError('admin.plugin.order_pdf.parameter.notfound', 'admin');
             log_info('The Order cannot found!');
 
             return $app->redirect($app->url('admin_order'));
         }
 
         /* @var OrderPdfRepository $repos */
-        $repos = $app['eccube.plugin.order_pdf.repository.order_pdf'];
+        $repos = $app['orderpdf.repository.order_pdf'];
 
         $OrderPdf = $repos->find($app->user());
 
         if (EntityUtil::isEmpty($OrderPdf)) {
             $OrderPdf = new OrderPdf();
-            $OrderPdf->setIssueDate(new \DateTime())
-                ->setTitle($app->trans('admin.order_pdf.title.default'))
-                ->setMessage1($app->trans('admin.order_pdf.message1.default'))
-                ->setMessage2($app->trans('admin.order_pdf.message2.default'))
-                ->setMessage3($app->trans('admin.order_pdf.message3.default'));
+            $OrderPdf
+                ->setTitle($app->trans('admin.plugin.order_pdf.title.default'))
+                ->setMessage1($app->trans('admin.plugin.order_pdf.message1.default'))
+                ->setMessage2($app->trans('admin.plugin.order_pdf.message2.default'))
+                ->setMessage3($app->trans('admin.plugin.order_pdf.message3.default'));
         }
 
         /**
@@ -118,7 +118,7 @@ class OrderPdfController extends AbstractController
 
         // サービスの取得
         /* @var OrderPdfService $service */
-        $service = $app['eccube.plugin.order_pdf.service.order_pdf'];
+        $service = $app['orderpdf.service.order_pdf'];
 
         $arrData = $form->getData();
 
@@ -127,7 +127,7 @@ class OrderPdfController extends AbstractController
 
         // 異常終了した場合の処理
         if (!$status) {
-            $app->addError('admin.order_pdf.download.failure', 'admin');
+            $app->addError('admin.plugin.order_pdf.download.failure', 'admin');
             log_info('Unable to create pdf files! Process have problems!');
 
             return $app->render('OrderPdf/Resource/template/admin/order_pdf.twig', array(
@@ -151,7 +151,7 @@ class OrderPdfController extends AbstractController
             // Save input to DB
             $arrData['admin'] = $app->user();
             /* @var OrderPdfRepository $repos */
-            $repos = $app['eccube.plugin.order_pdf.repository.order_pdf'];
+            $repos = $app['orderpdf.repository.order_pdf'];
 
             $repos->save($arrData);
         }
