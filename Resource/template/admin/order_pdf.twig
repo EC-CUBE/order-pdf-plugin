@@ -13,7 +13,7 @@
 {% set menus = ['order', 'order_master'] %}
 
 {% block title %}受注管理{% endblock %}
-{% block sub_title %}受注マスター{% endblock %}
+{% block sub_title %}帳票出力{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -22,154 +22,147 @@
 {% endblock stylesheet %}
 
 {% block main %}
-    <form role="form" name="order_pdf_form" id="order_pdf_form" method="post"
-          action="{{ url('plugin_admin_order_pdf_download') }}">
+<div class="row" id="aside_wrap">
+    <form role="form" name="order_pdf_form" id="order_pdf_form" method="post" action="{{ url('plugin_admin_order_pdf_download') }}">
         {{ form_widget(form._token) }}
-        <div class="row" id="aside_wrap">
-            <div class="col-md-9">
-                <div class="box form-horizontal">
-                    <div class="box-header">
-                        <h3 class="box-title">帳票の作成</h3>
+        <div class="col-md-9">
+            <div class="box accordion">
+                <div class="box-header toggle active">
+                    <h3 class="box-title">帳票の作成<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body" style="display: block;">
+                    <div class="form-horizontal">
+                        {#発行日#}
+                        <div class="form-group">
+                            {{ form_label(form.issue_date) }}
+                            <div class="col-sm-9 col-lg-10 form-inline">
+                                {{ form_widget(form.issue_date) }}
+                                {{ form_errors(form.issue_date) }}
+                            </div>
+                        </div>
+                        {#注文番号#}
+                        <div class="form-group">
+                            {{ form_label(form.ids) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.ids) }}
+                                {{ form_errors(form.ids) }}
+                            </div>
+                        </div>
+                        {#帳票タイトル#}
+                        <div class="form-group">
+                            {{ form_label(form.title) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.title) }}
+                                {{ form_errors(form.title) }}
+                            </div>
+                        </div>
+                        {#メッセージ#}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">メッセージ</label>
+                            <div class="col-sm-offset-2">
+                                {{ form_label(form.message1) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_errors(form.message1) }}
+                                    {{ form_widget(form.message1) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2">
+                                {{ form_label(form.message2) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_widget(form.message2) }}
+                                    {{ form_errors(form.message2) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2">
+                                {{ form_label(form.message3) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_widget(form.message3) }}
+                                    {{ form_errors(form.message3) }}
+                                </div>
+                            </div>
+                        </div>
+                        {#備考#}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">備考</label>
+                            <div class="col-sm-offset-2">
+                                {{ form_label(form.note1) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_errors(form.note1) }}
+                                    {{ form_widget(form.note1) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2">
+                                {{ form_label(form.note2) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_widget(form.note2) }}
+                                    {{ form_errors(form.note2) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2">
+                                {{ form_label(form.note3) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_widget(form.note3) }}
+                                    {{ form_errors(form.note3) }}
+                                </div>
+                            </div>
+                        </div>
+                        {# 保存する #}
+                        <div class="form-group text-right">
+                            <div class="col-sm-12 col-lg-12">
+                                {{ form_widget(form.default) }}
+                                {{ form_errors(form.default) }}
+                            </div>
+                        </div>
                     </div>
-                    <!-- /.box-header -->
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+        <div class="col-md-3">
+            <div class="col_inner" id="aside_column">
+                <div class="box no-header">
                     <div class="box-body">
-                        <table class="table table-striped">
-                            <tbody>
-
-                            {# 注文番号 #}
-                            <tr>
-                                <th class="col-sm-2"><label class="control-label">注文番号</label></th>
-                                <td>
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.ids) }}
-                                        {{ form_errors(form.ids) }}
-                                    </div>
-                                </td>
-                            </tr>
-                            {# 発行日 #}
-                            <tr>
-                                <th><label class="control-label">発行日</label></th>
-                                <td>
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.issue_date) }}
-                                        {{ form_errors(form.issue_date) }}
-                                    </div>
-                                </td>
-                            </tr>
-                            {# 帳票タイトル #}
-                            <tr>
-                                <th><label class="control-label">帳票タイトル</label></th>
-                                <td>
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.title) }}
-                                        {{ form_errors(form.title) }}
-                                    </div>
-                                </td>
-                            </tr>
-                            {# メッセージ #}
-                            <tr>
-                                <th><label class="control-label">メッセージ</label></th>
-                                <td>
-                                    {# メッセージ1行目 #}
-                                    {{ form_label(form.message1) }}
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.message1) }}
-                                        {{ form_errors(form.message1) }}
-                                    </div>
-                                    {# メッセージ2行目 #}
-                                    {{ form_label(form.message2) }}
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.message2) }}
-                                        {{ form_errors(form.message2) }}
-                                    </div>
-                                    {# メッセージ3行目 #}
-                                    {{ form_label(form.message3) }}
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.message3) }}
-                                        {{ form_errors(form.message3) }}
-                                    </div>
-                                </td>
-                            </tr>
-                            {# 備考 #}
-                            <tr>
-                                <th valign="middle"><label class="control-label">備考</label></th>
-                                <td>
-                                    {# 備考1行目 #}
-                                    {{ form_label(form.note1) }}
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.note1) }}
-                                        {{ form_errors(form.note1) }}
-                                    </div>
-                                    {# 備考2行目 #}
-                                    {{ form_label(form.note2) }}
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.note2) }}
-                                        {{ form_errors(form.note2) }}
-                                    </div>
-                                    {# 備考3行目 #}
-                                    {{ form_label(form.note3) }}
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.note3) }}
-                                        {{ form_errors(form.note3) }}
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label class="control-label">入力内容を保存する</label>
-                                </th>
-                                <td>
-                                    <div class="col-sm-9 col-lg-10">
-                                        {{ form_widget(form.default) }}
-                                        {{ form_errors(form.default) }}
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!-- /.col -->
-            <div class="col-md-3">
-                <div class="col_inner" id="aside_column">
-                    <div class="box no-header">
-                        <div class="box-body">
-                            <div class="row text-center">
+                        <div class="row text-center">
+                            <div class="form-group">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                     <button class="btn btn-primary btn-block btn-lg"
                                             onclick="document.order_pdf_form.submit();">この内容で作成する
                                     </button>
                                 </div>
-
                             </div>
                         </div>
-
-                        <div class="box-body">
-                            <div class="row text-center">
+                        <div class="row text-center with-border">
+                            <div class="form-group">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                     <button class="btn btn-default btn-block btn-lg" id="reset">リセット
                                     </button>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="box-body">
-                            <div class="row text-center">
-                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <a id="back" href="#">検索画面に戻る
-                                    </a>
-                                </div>
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                <a id="back" href="#">検索画面に戻る
+                                </a>
                             </div>
                         </div>
-                        <!-- /.box-body -->
                     </div>
-                    <!-- /.box -->
+                    <!-- /.box-body -->
                 </div>
+                <!-- /.box -->
             </div>
-            <!-- /.col -->
         </div>
     </form>
+</div>
 {% endblock %}
 
 {% block javascript %}
