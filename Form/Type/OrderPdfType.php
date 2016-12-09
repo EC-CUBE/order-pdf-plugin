@@ -133,7 +133,7 @@ class OrderPdfType extends AbstractType
             ))
             ->add('default', 'checkbox', array(
                 'required' => false,
-                'label' => 'yes',
+                'label' => '入力内容を保存する',
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($app) {
                 $form = $event->getForm();
