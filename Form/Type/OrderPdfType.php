@@ -48,7 +48,7 @@ class OrderPdfType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $config = $this->app['config'];
-
+        $app = $this->app;
         $builder
             ->add('ids', 'text', array(
                 'label' => '注文番号',
@@ -135,7 +135,7 @@ class OrderPdfType extends AbstractType
                 'required' => false,
                 'label' => 'yes',
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($app) {
                 $form = $event->getForm();
                 $data = $form->getData();
                 if (!isset($data['ids']) || !is_string($data['ids'])) {
@@ -143,7 +143,7 @@ class OrderPdfType extends AbstractType
                 }
                 $ids = $data['ids'];
                 /* @var $em EntityManager */
-                $em = $this->app['orm.em'];
+                $em = $app['orm.em'];
                 $qb = $em->createQueryBuilder();
                 $qb->select('count(o.id)')
                     ->from('Eccube\\Entity\\Order', 'o')
@@ -153,7 +153,7 @@ class OrderPdfType extends AbstractType
                 $expected = count(explode(',', $ids));
                 if ($actual != $expected) {
                     $form['ids']->addError(
-                        new FormError($this->app->trans('admin.plugin.order_pdf.parameter.notfound'))
+                        new FormError($app->trans('admin.plugin.order_pdf.parameter.notfound'))
                     );
                 }
             });
