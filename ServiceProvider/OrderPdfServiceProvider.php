@@ -64,7 +64,7 @@ class OrderPdfServiceProvider implements ServiceProviderInterface
             ->bind('plugin_admin_order_pdf');
 
         // PDFファイルダウンロード
-        $admin->match('/plugin/order-pdf/download', '\\Plugin\\OrderPdf\\Controller\\OrderPdfController::download')
+        $admin->post('/plugin/order-pdf/download', '\\Plugin\\OrderPdf\\Controller\\OrderPdfController::download')
             ->bind('plugin_admin_order_pdf_download');
 
         $app->mount('/'.trim($app['config']['admin_route'], '/').'/', $admin);

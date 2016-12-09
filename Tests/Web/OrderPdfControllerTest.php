@@ -148,7 +148,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      */
     public function testDownloadWithBadMethod()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\BadRequestHttpException');
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException');
         /**
          * @var Client $client
          */

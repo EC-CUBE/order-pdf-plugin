@@ -102,11 +102,6 @@ class OrderPdfController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        if (!$form->isSubmitted()) {
-            log_error('Download with bad method! Allow post only!');
-            throw new BadRequestHttpException();
-        }
-
         // Validation
         if (!$form->isValid()) {
             log_info('The parameter is invalid!');

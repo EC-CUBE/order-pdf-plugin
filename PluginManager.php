@@ -30,6 +30,11 @@ class PluginManager extends AbstractPluginManager
     private $logoPath;
 
     /**
+     * @var string
+     */
+    private $targetDir = 'OrderPdf/';
+
+    /**
      * PluginManager constructor.
      */
     public function __construct()
@@ -114,7 +119,7 @@ class PluginManager extends AbstractPluginManager
         if (!file_exists($this->logoPath)) {
             return;
         }
-        $file->copy($this->logoPath, $config['template_realdir'].'/'.$this->logoName, true);
+        $file->copy($this->logoPath, $config['template_realdir'].'/'.$this->targetDir.$this->logoName, true);
     }
 
     /**
@@ -125,7 +130,7 @@ class PluginManager extends AbstractPluginManager
     private function removeLogo($config)
     {
         $file = new Filesystem();
-        $file->remove($config['template_realdir'].'/'.$this->logoName);
+        $file->remove($config['template_realdir'].'/'.$this->targetDir.$this->logoName);
     }
 
     /**
@@ -136,7 +141,7 @@ class PluginManager extends AbstractPluginManager
     private function rollBackLogo($config)
     {
         $file = new Filesystem();
-        $sourcePath = $config['template_realdir'].'/'.$this->logoName;
+        $sourcePath = $config['template_realdir'].'/'.$this->targetDir.$this->logoName;
         if (!file_exists($sourcePath)) {
             return;
         }
