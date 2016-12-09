@@ -17,6 +17,10 @@
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datetimepicker.min.css">
+{% endblock stylesheet %}
+
 {% block main %}
     <form role="form" name="order_pdf_form" id="order_pdf_form" method="post"
           action="{{ url('plugin_admin_order_pdf_download') }}">
@@ -169,8 +173,17 @@
 {% endblock %}
 
 {% block javascript %}
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment-ja.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript">
         $(function () {
+            $("input[type='date']").datetimepicker({
+                locale: 'ja',
+                format: 'YYYY-MM-DD',
+                showTodayButton: true
+            });
+
             $("#reset").click(function (_e) {
                 _e.preventDefault();
                 $("input[name='admin_order_pdf[title]']").val('{{ form.vars.value.title }}');

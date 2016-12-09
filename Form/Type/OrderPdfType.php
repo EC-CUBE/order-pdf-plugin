@@ -10,9 +10,13 @@
 
 namespace Plugin\OrderPdf\Form\Type;
 
+use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -130,7 +134,29 @@ class OrderPdfType extends AbstractType
             ->add('default', 'checkbox', array(
                 'required' => false,
                 'label' => 'yes',
-            ));
+            ))
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+                $data = $form->getData();
+                if (!isset($data['ids']) || !is_string($data['ids'])) {
+                    return;
+                }
+                $ids = $data['ids'];
+                /* @var $em EntityManager */
+                $em = $this->app['orm.em'];
+                $qb = $em->createQueryBuilder();
+                $qb->select('count(o.id)')
+                    ->from('Eccube\\Entity\\Order', 'o')
+                    ->where($qb->expr()->in('o.id', ':ids'))
+                    ->setParameter('ids', $ids);
+                $actual = $qb->getQuery()->getSingleScalarResult();
+                $expected = count(explode(',', $ids));
+                if ($actual != $expected) {
+                    $form['ids']->addError(
+                        new FormError($this->app->trans('admin.plugin.order_pdf.parameter.notfound'))
+                    );
+                }
+            });
     }
 
     /**
