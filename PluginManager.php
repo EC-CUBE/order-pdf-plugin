@@ -20,26 +20,10 @@ use Symfony\Component\Filesystem\Filesystem;
 class PluginManager extends AbstractPluginManager
 {
     /**
-     * @var string
-     */
-    private $logoName = 'logo.png';
-
-    /**
-     * @var string
-     */
-    private $logoPath;
-
-    /**
-     * @var string
-     */
-    private $targetDir = 'OrderPdf/';
-
-    /**
      * PluginManager constructor.
      */
     public function __construct()
     {
-        $this->logoPath = __DIR__.'/Resource/template/'.$this->logoName;
     }
 
     /**
@@ -50,8 +34,8 @@ class PluginManager extends AbstractPluginManager
      */
     public function install($config, $app)
     {
-        // Backup logo.
-        $this->backupLogo($app['config']);
+        $this->copyFile($app['config'], $config['code'], $config['const']['logo_file']);
+        $this->copyFile($app['config'], $config['code'], $config['const']['pdf_file']);
     }
 
     /**
@@ -63,7 +47,8 @@ class PluginManager extends AbstractPluginManager
     public function uninstall($config, $app)
     {
         // Remove temp
-        $this->removeLogo($app['config']);
+        $this->removeLogo($app['config'], $config['code'], $config['const']['logo_file']);
+        $this->removeLogo($app['config'], $config['code'], $config['const']['pdf_file']);
 
         $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migration', $config['code'], 0);
     }
@@ -76,9 +61,6 @@ class PluginManager extends AbstractPluginManager
      */
     public function enable($config, $app)
     {
-        // Backup logo.
-        $this->backupLogo($app['config']);
-
         $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migration', $config['code']);
     }
 
@@ -100,51 +82,72 @@ class PluginManager extends AbstractPluginManager
      */
     public function update($config, $app)
     {
-        $arrConfig = $app['config'];
-        // Rollback to old logo
-        $this->rollBackLogo($arrConfig);
+        $this->copyFile($app['config'], $config['code'], $config['const']['logo_file']);
+        $this->copyFile($app['config'], $config['code'], $config['const']['pdf_file']);
 
         // Update
         $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migration', $config['code']);
     }
 
     /**
-     * Backup logo before update.
+     * ファイルをapp/templateにコピーする.
      *
-     * @param array $config
+     * @param array  $config
+     * @param string $pluginCode
+     * @param string $fileName
      */
-    private function backupLogo($config)
+    private function copyFile($config, $pluginCode, $fileName)
     {
-        $file = new Filesystem();
-        if (!file_exists($this->logoPath)) {
+        $src = $this->getPluginTemplateDir().'/'.$fileName;
+        $target = $this->getAppTemplateDir($config).'/'.$pluginCode.'/'.$fileName;
+
+        // コピー先にすでにファイルが存在する場合は、ユーザーが変更したロゴ画像を残すために上書きをしない
+        if (file_exists($target) || !file_exists($src)) {
             return;
         }
-        $file->copy($this->logoPath, $config['template_realdir'].'/'.$this->targetDir.$this->logoName, true);
+
+        $file = new Filesystem();
+        $file->copy($src, $target, true);
     }
 
     /**
-     * Remove logo.
+     * インストール時app/templateにコピーしたファイルを削除する.
      *
-     * @param array $config
+     * @param array  $config
+     * @param string $pluginCode
+     * @param string $fileName
      */
-    private function removeLogo($config)
+    private function removeLogo($config, $pluginCode, $fileName)
     {
+        $target = $this->getAppTemplateDir($config).'/'.$pluginCode.'/'.$fileName;
+
+        if (!file_exists($target)) {
+            return;
+        }
+
         $file = new Filesystem();
-        $file->remove($config['template_realdir'].'/'.$this->targetDir.$this->logoName);
+        $file->remove($target);
     }
 
     /**
-     * Roll back to old logo.
+     * Plugin内のテンプレートディレクトリのパスを取得する.
+     *
+     * @return string
+     */
+    private function getPluginTemplateDir()
+    {
+        return __DIR__.'/Resource/template';
+    }
+
+    /**
+     * app/template内のテンプレートディレクトリのパスを取得する.
      *
      * @param array $config
+     *
+     * @return string
      */
-    private function rollBackLogo($config)
+    private function getAppTemplateDir($config)
     {
-        $file = new Filesystem();
-        $sourcePath = $config['template_realdir'].'/'.$this->targetDir.$this->logoName;
-        if (!file_exists($sourcePath)) {
-            return;
-        }
-        $file->copy($sourcePath, $this->logoPath, true);
+        return $config['template_realdir'].'/../admin';
     }
 }

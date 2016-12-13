@@ -6,3 +6,6 @@ service:
     - OrderPdfServiceProvider
 orm.path:
     - /Resource/doctrine
+const:
+    logo_file: logo.png
+    pdf_file: nouhinsyo1.pdf
