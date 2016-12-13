@@ -82,27 +82,27 @@ class OrderPdfType extends AbstractType
             ->add('message1', 'text', array(
                 'label' => '1行目',
                 'required' => false,
-                'attr' => array('maxlength' => $config['order_pdf_message_len']),
+                'attr' => array('maxlength' => $config['OrderPdf']['const']['order_pdf_message_len']),
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['order_pdf_message_len'])),
+                    new Assert\Length(array('max' => $config['OrderPdf']['const']['order_pdf_message_len'])),
                 ),
                 'trim' => false,
             ))
             ->add('message2', 'text', array(
                 'label' => '2行目',
                 'required' => false,
-                'attr' => array('maxlength' => $config['order_pdf_message_len']),
+                'attr' => array('maxlength' => $config['OrderPdf']['const']['order_pdf_message_len']),
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['order_pdf_message_len'])),
+                    new Assert\Length(array('max' => $config['OrderPdf']['const']['order_pdf_message_len'])),
                 ),
                 'trim' => false,
             ))
             ->add('message3', 'text', array(
                 'label' => '3行目',
                 'required' => false,
-                'attr' => array('maxlength' => $config['order_pdf_message_len']),
+                'attr' => array('maxlength' => $config['OrderPdf']['const']['order_pdf_message_len']),
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['order_pdf_message_len'])),
+                    new Assert\Length(array('max' => $config['OrderPdf']['const']['order_pdf_message_len'])),
                 ),
                 'trim' => false,
             ))
@@ -141,7 +141,7 @@ class OrderPdfType extends AbstractType
                 if (!isset($data['ids']) || !is_string($data['ids'])) {
                     return;
                 }
-                $ids = $data['ids'];
+                $ids = explode(',', $data['ids']);
                 /* @var $em EntityManager */
                 $em = $app['orm.em'];
                 $qb = $em->createQueryBuilder();
@@ -150,7 +150,7 @@ class OrderPdfType extends AbstractType
                     ->where($qb->expr()->in('o.id', ':ids'))
                     ->setParameter('ids', $ids);
                 $actual = $qb->getQuery()->getSingleScalarResult();
-                $expected = count(explode(',', $ids));
+                $expected = count($ids);
                 if ($actual != $expected) {
                     $form['ids']->addError(
                         new FormError($app->trans('admin.plugin.order_pdf.parameter.notfound'))

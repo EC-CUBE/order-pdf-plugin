@@ -22,7 +22,7 @@ class OrderPdf extends CommonEvent
      *
      * @param TemplateEvent $event
      */
-    public function onAdminOrderRender(TemplateEvent $event)
+    public function onAdminOrderIndexRender(TemplateEvent $event)
     {
         log_info('Event: Order pdf hook into the order search render start.');
 

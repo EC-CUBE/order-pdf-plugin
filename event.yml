@@ -4,7 +4,7 @@
 
 # New hookpoint for version >= 3.0.9
 Admin/Order/index.twig:
-    - [onAdminOrderRender, NORMAL]
+    - [onAdminOrderIndexRender, NORMAL]
 
 # deprecated event (for v3.0.0 - 3.0.8)
 eccube.event.render.admin_order.before:

@@ -42,11 +42,11 @@ class OrderPdfEvent
      *
      * @param TemplateEvent $event
      */
-    public function onAdminOrderRender(TemplateEvent $event)
+    public function onAdminOrderIndexRender(TemplateEvent $event)
     {
         /* @var OrderPdf $orderPdfEvent */
         $orderPdfEvent = $this->app['orderpdf.event.order_pdf'];
-        $orderPdfEvent->onAdminOrderRender($event);
+        $orderPdfEvent->onAdminOrderIndexRender($event);
     }
 
     /**

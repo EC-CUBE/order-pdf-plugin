@@ -9,3 +9,4 @@ orm.path:
 const:
     logo_file: logo.png
     pdf_file: nouhinsyo1.pdf
+    order_pdf_message_len: 30

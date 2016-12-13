@@ -151,8 +151,7 @@
                     <div class="box-body">
                         <div class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <a id="back" href="#">検索画面に戻る
-                                </a>
+                                <p><a href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1">検索画面に戻る</a></p>
                             </div>
                         </div>
                     </div>
@@ -171,11 +170,16 @@
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript">
         $(function () {
-            $("input[type='date']").datetimepicker({
-                locale: 'ja',
-                format: 'YYYY-MM-DD',
-                showTodayButton: true
-            });
+            var inputDate = document.createElement('input');
+            inputDate.setAttribute('type', 'date');
+            if (inputDate.type !== 'date') {
+                $('input[id$=_issue_date]').datetimepicker({
+                    locale: 'ja',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: true,
+                    showTodayButton: true
+                });
+            }
 
             $("#reset").click(function (_e) {
                 _e.preventDefault();
@@ -187,11 +191,6 @@
                 $("input[name='admin_order_pdf[note1]']").val('{{ form.vars.value.note1 }}');
                 $("input[name='admin_order_pdf[note2]']").val('{{ form.vars.value.note2 }}');
                 $("input[name='admin_order_pdf[note3]']").val('{{ form.vars.value.note3 }}');
-            });
-
-            $("#back").click(function (event) {
-                event.preventDefault();
-                history.back(1);
             });
         });
     </script>

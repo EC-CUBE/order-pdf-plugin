@@ -95,21 +95,6 @@ class OrderPdfServiceProvider implements ServiceProviderInterface
             $app['translator']->addResource('yaml', $file, $app['locale']);
         }
 
-        // Config
-        $app['config'] = $app->share($app->extend('config', function ($config) {
-            // Update constants
-            $constantFile = __DIR__.'/../Resource/config/constant.yml';
-            if (file_exists($constantFile)) {
-                $constant = Yaml::parse(file_get_contents($constantFile));
-                if (!empty($constant)) {
-                    // Replace constants
-                    $config = array_replace_recursive($config, $constant);
-                }
-            }
-
-            return $config;
-        }));
-
         // initialize logger (for 3.0.0 - 3.0.8)
         if (!Version::isSupportMethod()) {
             eccube_log_init($app);
