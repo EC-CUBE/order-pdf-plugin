@@ -1,11 +1,12 @@
 name: OrderPdf
-event: OrderPdf
+event: OrderPdfEvent
 code: OrderPdf
-version: 0.0.2
+version: 1.0.0
 service:
     - OrderPdfServiceProvider
 orm.path:
     - /Resource/doctrine
-#form:
-#    onSetData:
-#        Form\Type\PaymentFragmentForm
+const:
+    logo_file: logo.png
+    pdf_file: nouhinsyo1.pdf
+    order_pdf_message_len: 30

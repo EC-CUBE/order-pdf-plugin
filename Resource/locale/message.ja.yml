@@ -1,1 +1,6 @@
-admin.orecer_pdf.parameter.notfound: 注文番号がありません。
+admin.plugin.order_pdf.parameter.notfound: 注文番号がありません。
+admin.plugin.order_pdf.download.failure: ダウンロード失敗!
+admin.plugin.order_pdf.title.default: お買上げ明細書(納品書)
+admin.plugin.order_pdf.message1.default: このたびはお買上げいただきありがとうございます。
+admin.plugin.order_pdf.message2.default: 下記の内容にて納品させていただきます。
+admin.plugin.order_pdf.message3.default: ご確認くださいますよう、お願いいたします。
