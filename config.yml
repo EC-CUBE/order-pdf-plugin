@@ -1,4 +1,4 @@
-name: OrderPdf
+name: 帳票出力
 event: OrderPdfEvent
 code: OrderPdf
 version: 1.0.0
