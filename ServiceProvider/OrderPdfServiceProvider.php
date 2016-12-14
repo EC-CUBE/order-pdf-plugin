@@ -18,7 +18,6 @@ use Plugin\OrderPdf\Service\OrderPdfService;
 use Plugin\OrderPdf\Util\Version;
 use Silex\Application as BaseApplication;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\Yaml\Yaml;
 
 // include log functions (for 3.0.0 - 3.0.11)
 require_once __DIR__.'/../log.php';

@@ -522,7 +522,7 @@ class OrderPdfService extends AbstractFPDIService
     /**
      * Colored table.
      *
-     * FIXME: 後の列の高さが大きい場合、表示が乱れる。
+     * TODO: 後の列の高さが大きい場合、表示が乱れる。
      *
      * @param array $header 出力するラベル名一覧
      * @param array $data   出力するデータ
@@ -546,7 +546,8 @@ class OrderPdfService extends AbstractFPDIService
 
         // Header
         $this->Cell(5, 7, '', 0, 0, '', 0, '');
-        for ($i = 0; $i < count($header); ++$i) {
+        $count = count($header);
+        for ($i = 0; $i < $count; ++$i) {
             $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1);
         }
         $this->Ln();
@@ -568,7 +569,7 @@ class OrderPdfService extends AbstractFPDIService
             $cellHeight = 0;
             foreach ($row as $col) {
                 // 列の処理
-                // FIXME 汎用的ではない処理。この指定は呼び出し元で行うようにしたい。
+                // TODO: 汎用的ではない処理。この指定は呼び出し元で行うようにしたい。
                 // テキストの整列を指定する
                 $align = ($i == 0) ? 'L' : 'R';
 
