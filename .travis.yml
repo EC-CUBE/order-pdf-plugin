@@ -1,17 +1,18 @@
 language: php
-
-sudo: false
+sudo: required
+dist: trusty
+group: deprecated-2017Q4
 
 cache:
   directories:
     - $HOME/.composer/cache
 
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
   - 7.0
+  - 7.1
 
 env:
   # plugin code
@@ -25,19 +26,22 @@ env:
     # ec-cube 3.0.9
     - ECCUBE_VERSION=3.0.9 DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
     - ECCUBE_VERSION=3.0.9 DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
-    # ec-cube 3.0.10
-    - ECCUBE_VERSION=3.0.10 DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
-    - ECCUBE_VERSION=3.0.10 DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
-    # ec-cube 3.0.11
-    - ECCUBE_VERSION=3.0.11 DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
-    - ECCUBE_VERSION=3.0.11 DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
+    # ec-cube 3.0.14
+    - ECCUBE_VERSION=3.0.14 DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
+    - ECCUBE_VERSION=3.0.14 DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
 matrix:
+  fail_fast: true
   fast_finish: true
   include:
-  exclude:
-  allow_failures:
     - php: 5.3
-      env: ECCUBE_VERSION=master DB=sqlite
+      dist: precise
+    - php: 7.1
+      env: ECCUBE_VERSION=master DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+
+  exclude:
+    - php: 7.1
+      env: ECCUBE_VERSION=master DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
+  allow_failures:
     - php: 5.4
       env: ECCUBE_VERSION=master DB=sqlite
     - php: 5.5
@@ -50,10 +54,10 @@ matrix:
       env: ECCUBE_VERSION=3.0.9 DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
     - php: 7.0
       env: ECCUBE_VERSION=3.0.9 DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
-    - php: 7.0
-      env: ECCUBE_VERSION=3.0.10 DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
-    - php: 7.0
-      env: ECCUBE_VERSION=3.0.10 DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
+    - php: 7.1
+      env: ECCUBE_VERSION=3.0.9 DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
+    - php: 7.1
+      env: ECCUBE_VERSION=3.0.9 DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
 
 install:
   - gem install mime-types -v 2.99.1
@@ -84,8 +88,8 @@ before_script:
 
 script:
   # exec phpunit on ec-cube
-  - phpunit app/Plugin/${PLUGIN_CODE}/Tests
-  - if [[ $TRAVIS_PHP_VERSION =~ ^[7] ]]; then ./vendor/bin/phpunit -c app/Plugin/${PLUGIN_CODE}/phpunit.xml.dist --coverage-clover=coverage.clover ; fi
+  - if [ !$COVERAGE ]; then ./vendor/bin/phpunit app/Plugin/${PLUGIN_CODE}/Tests; fi
+  - if [ $COVERAGE ]; then ./vendor/bin/phpunit -c app/Plugin/${PLUGIN_CODE}/phpunit.xml.dist --coverage-clover=coverage.clover; fi
 
 after_script:
   # disable plugin
@@ -99,4 +103,4 @@ after_script:
 
 after_success:
   # for coveralls
-  - if [[ $TRAVIS_PHP_VERSION =~ ^[7] ]]; then php vendor/bin/coveralls -v -x coverage.clover ; fi
+  - if [ $COVERAGE ]; then php vendor/bin/coveralls -v -x coverage.clover; fi
