@@ -88,8 +88,8 @@ before_script:
 
 script:
   # exec phpunit on ec-cube
-  - if [ !$COVERAGE ]; then ./vendor/bin/phpunit app/Plugin/${PLUGIN_CODE}/Tests; fi
-  - if [ $COVERAGE ]; then ./vendor/bin/phpunit -c app/Plugin/${PLUGIN_CODE}/phpunit.xml.dist --coverage-clover=coverage.clover; fi
+  - phpunit app/Plugin/${PLUGIN_CODE}/Tests
+  - if [[ $TRAVIS_PHP_VERSION =~ ^[7] ]]; then ./vendor/bin/phpunit -c app/Plugin/${PLUGIN_CODE}/phpunit.xml.dist --coverage-clover=coverage.clover ; fi
 
 after_script:
   # disable plugin
@@ -103,4 +103,4 @@ after_script:
 
 after_success:
   # for coveralls
-  - if [ $COVERAGE ]; then php vendor/bin/coveralls -v -x coverage.clover; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ ^[7] ]]; then php vendor/bin/coveralls -v -x coverage.clover ; fi
