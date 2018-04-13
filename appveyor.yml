@@ -42,7 +42,7 @@ install:
   - cp tests/my.cnf c:\
   - SET PATH=C:\Program Files\MySql\MySQL Server 5.7\bin\;%PATH%
   - cinst php -version 5.6.35 --allow-empty-checksums
-  - SET PATH=C:\tools\php5656\;%PATH%
+  - SET PATH=C:\tools\php56\;%PATH%
   - copy C:\tools\php56\php.ini-production C:\tools\php56\php.ini
   - echo date.timezone="Asia/Tokyo" >> C:\tools\php56\php.ini
   - echo extension_dir=ext >> C:\tools\php56\php.ini
