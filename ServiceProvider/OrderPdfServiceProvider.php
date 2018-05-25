@@ -60,11 +60,11 @@ class OrderPdfServiceProvider implements ServiceProviderInterface
         }
         // 帳票の作成
         $admin->match('/plugin/order-pdf', '\\Plugin\\OrderPdf\\Controller\\OrderPdfController::index')
-            ->bind('plugin_admin_order_pdf');
+            ->bind('admin_plugin_order_pdf');
 
         // PDFファイルダウンロード
         $admin->post('/plugin/order-pdf/download', '\\Plugin\\OrderPdf\\Controller\\OrderPdfController::download')
-            ->bind('plugin_admin_order_pdf_download');
+            ->bind('admin_plugin_order_pdf_download');
 
         $app->mount('/'.trim($app['config']['admin_route'], '/').'/', $admin);
 

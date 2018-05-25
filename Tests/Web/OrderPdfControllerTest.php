@@ -66,7 +66,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler $crawler
          */
-        $crawler = $client->request('GET', $this->app->url('plugin_admin_order_pdf').'?ids'.$orderId.'=on');
+        $crawler = $client->request('GET', $this->app->url('admin_plugin_order_pdf').'?ids'.$orderId.'=on');
         $html = $crawler->filter('.box-body')->html();
         $this->assertContains((string) $orderId, $html);
         $this->assertContains('お買上げ明細書(納品書)', $html);
@@ -90,7 +90,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler $crawler
          */
-        $crawler = $client->request('GET', $this->app->url('plugin_admin_order_pdf').'?ids'.$orderId.'=on');
+        $crawler = $client->request('GET', $this->app->url('admin_plugin_order_pdf').'?ids'.$orderId.'=on');
         $form = $this->getForm($crawler);
         /**
          * @var Generator $faker
@@ -109,7 +109,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'application/pdf';
         $this->verify();
 
-        $crawler = $client->request('GET', $this->app->url('plugin_admin_order_pdf').'?ids'.$orderId.'=on');
+        $crawler = $client->request('GET', $this->app->url('admin_plugin_order_pdf').'?ids'.$orderId.'=on');
         $html = $crawler->filter('.box-body')->html();
 
         $this->assertContains((string) $orderId, $html);
@@ -132,7 +132,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
          */
         $client = $this->client;
 
-        $client->request('GET', $this->app->url('plugin_admin_order_pdf'));
+        $client->request('GET', $this->app->url('admin_plugin_order_pdf'));
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('admin_order')));
         /**
          * @var Crawler $crawler
@@ -154,7 +154,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
          */
         $client = $this->client;
 
-        $client->request('GET', $this->app->url('plugin_admin_order_pdf_download'));
+        $client->request('GET', $this->app->url('admin_plugin_order_pdf_download'));
 
         $this->assertTrue($this->hasFailed());
     }
@@ -179,7 +179,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler $crawler
          */
-        $crawler = $client->request('GET', $this->app->url('plugin_admin_order_pdf').'?ids'.$orderId.'=on');
+        $crawler = $client->request('GET', $this->app->url('admin_plugin_order_pdf').'?ids'.$orderId.'=on');
         $html = $crawler->filter('.box-body')->html();
         $this->assertContains((string) $orderId, $html);
         $this->assertContains('お買上げ明細書(納品書)', $html);
@@ -233,7 +233,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler $crawler
          */
-        $crawler = $client->request('GET', $this->app->url('plugin_admin_order_pdf').'?ids'.$orderId.'=on');
+        $crawler = $client->request('GET', $this->app->url('admin_plugin_order_pdf').'?ids'.$orderId.'=on');
         $html = $crawler->filter('.box-body')->html();
         $this->assertContains((string) $orderId, $html);
         $this->assertContains('お買上げ明細書(納品書)', $html);
@@ -286,7 +286,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->persist($OrderPdf);
         $this->app['orm.em']->flush($OrderPdf);
 
-        $crawler = $client->request('GET', $this->app->url('plugin_admin_order_pdf').'?ids'.$orderId.'=on');
+        $crawler = $client->request('GET', $this->app->url('admin_plugin_order_pdf').'?ids'.$orderId.'=on');
         $html = $crawler->filter('.box-body')->html();
 
         $this->assertContains((string) $orderId, $html);
