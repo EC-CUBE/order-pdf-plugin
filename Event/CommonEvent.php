@@ -53,7 +53,7 @@ class CommonEvent
          * Group 2
          * Start drop down section.
          */
-        $search .= '(<ul\s+class="dropdown\-menu"[\s\S]*)';
+        $search .= '(<ul\s+class="dropdown\-menu[\s\S]*)';
         /*
          * Group 3
          * The end of the dropdown section.
