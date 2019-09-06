@@ -23,7 +23,7 @@
 
 {% block main %}
 <div class="row" id="aside_wrap">
-    <form role="form" name="order_pdf_form" id="order_pdf_form" method="post" action="{{ url('plugin_admin_order_pdf_download') }}">
+    <form role="form" name="order_pdf_form" id="order_pdf_form" method="post" action="{{ url('admin_plugin_order_pdf_download') }}">
         {{ form_widget(form._token) }}
         <div class="col-md-9">
             <div class="box accordion">
