@@ -57,48 +57,20 @@ class OrderPdfLegacy extends CommonEvent
      */
     private function getHtml(Response $response)
     {
-        // 検索結果一覧の下部に帳票出力を追加する
-        // 受注管理-受注マスターのHTMLを取得し、DOM化
-        $crawler = new Crawler($response->getContent());
+        $document = \DOMDocument::loadHTML($response->getContent());
 
-        // [Form id="dropdown-form"]の最終項目に追加(レイアウトに依存（時間無いのでベタ）)
-        $html = $this->getHtmlFromCrawler($crawler);
+        $xpath = new \DOMXPath($document);
+        $menu = $xpath->query('//li[@id="dropmenu"]//ul[@class="dropdown-menu"]', $document)->item(0);
 
-        $parts = $this->app->renderView(
-            'OrderPdf/Resource/template/admin/order_pdf_menu.twig'
-        );
-
-        try {
-            // ※商品編集画面 idなりclassなりがきちんとつかないとDOMをいじるのは難しい
-            // また、[その他]メニューの中に入れ込もうとしたがJQUERYのイベントが動作するので不可
-            // = = = = = = = = =
-            // その他メニューに追加するバージョン
-            $form = $crawler->filter('#dropmenu .dropdown-menu')->last()->html();
-            $newForm = $form.$parts;
-
-            $html = str_replace($form, $newForm, $html);
-        } catch (\InvalidArgumentException $e) {
-            log_error('Cannot found .dropdown-menu', array($e->getMessage()));
+        if ($menu) {
+            $parts = $this->app->renderView(
+                'OrderPdf/Resource/template/admin/order_pdf_menu.twig'
+            );
+            $newNode = \DOMDocument::loadXML($parts)->getElementsByTagName('li')->item(0);
+            $menu->appendChild($document->importNode($newNode, true));
         }
 
-        return html_entity_decode($html);
-    }
-
-    /**
-     * 解析用HTMLを取得.
-     *
-     * @param Crawler $crawler
-     *
-     * @return string
-     */
-    private function getHtmlFromCrawler(Crawler $crawler)
-    {
-        $html = '';
-        foreach ($crawler as $domElement) {
-            $domElement->ownerDocument->formatOutput = true;
-            $html .= $domElement->ownerDocument->saveHTML();
-        }
-
-        return html_entity_decode($html, ENT_NOQUOTES, 'UTF-8');
+        $crawler = new Crawler($document);
+        return $crawler->html();
     }
 }
