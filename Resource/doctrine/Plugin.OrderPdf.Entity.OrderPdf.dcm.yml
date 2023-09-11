@@ -38,6 +38,10 @@ Plugin\OrderPdf\Entity\OrderPdf:
             type: string
             length: 50
             nullable: true
+        invoice_registration_num:
+            type: string
+            length: 20
+            nullable: true
         del_flg:
             type: smallint
             nullable: false

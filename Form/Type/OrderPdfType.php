@@ -78,6 +78,14 @@ class OrderPdfType extends AbstractType
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
             ))
+            ->add('invoice_registration_num', 'text', array(
+                'label' => '適格請求書発行事業者登録番号',
+                'required' => false,
+                'attr' => array('maxlength' => 14),
+                'constraints' => array(
+                    new Assert\Length(array('max' => $config['stext_len'])),
+                ),
+            ))
             // メッセージ
             ->add('message1', 'text', array(
                 'label' => '1行目',
