@@ -68,6 +68,11 @@ class OrderPdf extends AbstractEntity
     private $note3;
 
     /**
+     * @var string
+     */
+    private $invoice_registration_num;
+
+    /**
      * @var bool
      */
     private $default;
@@ -323,6 +328,30 @@ class OrderPdf extends AbstractEntity
     public function setNote3($note3)
     {
         $this->note3 = $note3;
+
+        return $this;
+    }
+
+    /**
+     * Get invoice_registration_num.
+     *
+     * @return string
+     */
+    public function getInvoiceRegistrationNum()
+    {
+        return $this->invoice_registration_num;
+    }
+
+    /**
+     * Set invoice_registration_num.
+     *
+     * @param string $invoice_registration_num
+     *
+     * @return OrderPdf
+     */
+    public function setInvoiceRegistrationNum($invoice_registration_num)
+    {
+        $this->invoice_registration_num = $invoice_registration_num;
 
         return $this;
     }

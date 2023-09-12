@@ -174,7 +174,7 @@ class OrderPdfService extends AbstractFPDIService
             $this->renderTitle($formData['title']);
 
             // 店舗情報を描画する
-            $this->renderShopData();
+            $this->renderShopData($formData);
 
             // 注文情報を描画する
             $this->renderOrderData($order);
@@ -248,7 +248,7 @@ class OrderPdfService extends AbstractFPDIService
      * PDFに店舗情報を設定する
      * ショップ名、ロゴ画像以外はdtb_helpに登録されたデータを使用する.
      */
-    protected function renderShopData()
+    protected function renderShopData($formData = [])
     {
         // 基準座標を設定する
         $this->setBasePosition();
@@ -293,6 +293,12 @@ class OrderPdfService extends AbstractFPDIService
         $userPath = $this->app['config']['template_realdir'].'/../admin/OrderPdf/'.$logoFile;
         $logoFilePath = file_exists($userPath) ? $userPath : $originalPath;
         $this->Image($logoFilePath, 124, 46, 40);
+
+        // インボイス登録番号
+        if ($formData['invoice_registration_num']) {
+            $text = '登録番号: '.$formData['invoice_registration_num'];
+            $this->lfText(125, 87, $text, 8);
+        }
     }
 
     /**
@@ -427,6 +433,8 @@ class OrderPdfService extends AbstractFPDIService
         // 受注詳細情報
         // =========================================
         $i = 0;
+        $arrTaxableTotal = [];
+        $defaultTaxRule = $this->app['eccube.repository.tax_rule']->getByRule();
         /* @var OrderDetail $OrderDetail */
         foreach ($Order->getOrderDetails() as $OrderDetail) {
             // class categoryの生成
@@ -445,12 +453,23 @@ class OrderPdfService extends AbstractFPDIService
 
             // product
             $arrOrder[$i][0] = sprintf('%s / %s / %s', $OrderDetail->getProductName(), $OrderDetail->getProductCode(), $classCategory);
+
+            // 標準税率より低い税率は軽減税率として※を付与する
+            if ($defaultTaxRule->getTaxRate() > $OrderDetail->getTaxRate()) {
+                $arrOrder[$i][0] .= ' ※';
+            }
+
             // 購入数量
             $arrOrder[$i][1] = number_format($OrderDetail->getQuantity());
             // 税込金額（単価）
             $arrOrder[$i][2] = number_format($OrderDetail->getPriceIncTax()).self::MONETARY_UNIT;
             // 小計（商品毎）
             $arrOrder[$i][3] = number_format($OrderDetail->getTotalPrice()).self::MONETARY_UNIT;
+
+            if (array_key_exists($OrderDetail->getTaxRate(), $arrTaxableTotal) === false) {
+                $arrTaxableTotal[$OrderDetail->getTaxRate()] = 0;
+            }
+            $arrTaxableTotal[$OrderDetail->getTaxRate()] += $OrderDetail->getTotalPrice();
 
             ++$i;
         }
@@ -474,12 +493,14 @@ class OrderPdfService extends AbstractFPDIService
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = '送料';
         $arrOrder[$i][3] = number_format($Order->getDeliveryFeeTotal()).self::MONETARY_UNIT;
+        $arrTaxableTotal[$defaultTaxRule->getTaxRate()] += $Order->getDeliveryFeeTotal();
 
         ++$i;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = '手数料';
         $arrOrder[$i][3] = number_format($Order->getCharge()).self::MONETARY_UNIT;
+        $arrTaxableTotal[$defaultTaxRule->getTaxRate()] += $Order->getCharge();
 
         ++$i;
         $arrOrder[$i][0] = '';
@@ -495,6 +516,22 @@ class OrderPdfService extends AbstractFPDIService
 
         // PDFに設定する
         $this->setFancyTable($this->labelCell, $arrOrder, $this->widthCell);
+
+        $this->SetLineWidth(.3);
+        $this->SetFont(self::FONT_SJIS, '', 6);
+
+        $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
+        // 行頭近くの場合、表示崩れがあるためもう一個字下げする
+        if (270 <= $this->GetY()) {
+            $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
+        }
+        $width = array_reduce($this->widthCell, function ($n, $w) {
+            return $n + $w;
+        });
+        $this->SetX(20);
+
+        $message = $this->app['eccube.service.tax_rule']->getTaxDetail($arrTaxableTotal, $Order->getDiscount());
+        $this->MultiCell($width, 4, $message, 0, 'R', 0, '');
     }
 
     /**

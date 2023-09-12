@@ -56,6 +56,15 @@
                                 {{ form_errors(form.title) }}
                             </div>
                         </div>
+                        {#インボイス登録番号#}
+                        <div class="form-group">
+                            {{ form_label(form.invoice_registration_num) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.invoice_registration_num) }}
+                                {{ form_errors(form.invoice_registration_num) }}
+                            </div>
+                        </div>
+
                         {#メッセージ#}
                         <div class="form-group">
                             <label class="col-sm-2 control-label">メッセージ</label>

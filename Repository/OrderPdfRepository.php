@@ -45,6 +45,7 @@ class OrderPdfRepository extends EntityRepository
 
             $OrderPdf->setId($Member->getId())
                 ->setTitle($arrData['title'])
+                ->setInvoiceRegistrationNum($arrData['invoice_registration_num'])
                 ->setMessage1($arrData['message1'])
                 ->setMessage2($arrData['message2'])
                 ->setMessage3($arrData['message3'])
